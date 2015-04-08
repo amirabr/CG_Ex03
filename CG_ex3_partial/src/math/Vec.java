@@ -1,6 +1,5 @@
 package math;
 
-
 /**
  * 3D vector class that contains three doubles. Could be used to represent
  * Vectors but also Points and Colors.
@@ -17,7 +16,9 @@ public class Vec {
 	 * Initialize vector to (0,0,0)
 	 */
 	public Vec() {
-		//TODO: 
+		this.x = 0;
+		this.y = 0;
+		this.z = 0;
 	}
 
 	/**
@@ -43,7 +44,9 @@ public class Vec {
 	 *            Vector
 	 */
 	public Vec(Vec v) {
-		//TODO:
+		this.x = v.x;
+		this.y = v.y;
+		this.z = v.z;
 	}
 
 	/**
@@ -53,8 +56,10 @@ public class Vec {
 	 * @return The reflected vector
 	 */
 	public Vec reflect(Vec normal) {
-		//TODO:
-		return null;
+		Vec nor = normal.clone();
+		nor.scale(nor.dotProd(this) * (-2));
+		nor.add(this);
+		return nor;
 	}
 
 	/**
@@ -64,7 +69,9 @@ public class Vec {
 	 *            Vector
 	 */
 	public void add(Vec a) {
-		//TODO:
+		this.x += a.x;
+		this.y += a.y;
+		this.z += a.z;
 	}
 
 	/**
@@ -74,7 +81,9 @@ public class Vec {
 	 *            Vector
 	 */
 	public void sub(Vec a) {
-		//TODO:
+		this.x -= a.x;
+		this.y -= a.y;
+		this.z -= a.z;
 	}
 	
 	/**
@@ -86,7 +95,8 @@ public class Vec {
 	 *            Vector
 	 */
 	public void mac(double s, Vec a) {
-		//TODO:
+		a.scale(s);
+		add(a);
 	}
 
 	/**
@@ -96,17 +106,21 @@ public class Vec {
 	 *            Scalar
 	 */
 	public void scale(double s) {
-		//TODO:
+		this.x *= s;
+		this.y *= s;
+		this.z *= s;
 	}
 
 	/**
-	 * Pairwise multiplies with anther vector
+	 * Pairwise multiplies with another vector
 	 * 
 	 * @param a
 	 *            Vector
 	 */
 	public void scale(Vec a) {
-		//TODO:
+		this.x *= a.x;
+		this.y *= a.y;
+		this.z *= a.z;
 	}
 
 	/**
@@ -115,7 +129,7 @@ public class Vec {
 	 * @return Vector
 	 */
 	public void negate() {
-		//TODO:
+		scale(new Vec(-1, -1, -1));
 	}
 
 	/**
@@ -124,8 +138,7 @@ public class Vec {
 	 * @return Scalar
 	 */
 	public double length() {
-		//TODO:
-		return Double.NaN;
+		return Math.sqrt(x*x + y*y + z*z);
 	}
 
 	/**
@@ -134,8 +147,7 @@ public class Vec {
 	 * @return Scalar
 	 */
 	public double lengthSquared() {
-		//TODO:
-		return Double.NaN;		
+		return x*x + y*y + z*z;	
 	}
 
 	/**
@@ -146,8 +158,7 @@ public class Vec {
 	 * @return Scalar
 	 */
 	public double dotProd(Vec a) {
-		//TODO:
-		return Double.NaN;
+		return x*a.x + y*a.y + z*a.z;
 	}
 
 	/**
@@ -156,7 +167,12 @@ public class Vec {
 	 * @throws ArithmeticException
 	 */
 	public void normalize() throws ArithmeticException {
-		//TODO:
+		double l = length();
+		if (l == 0)
+			throw new ArithmeticException("DividedByZero"); 
+		this.x /= l;
+		this.y /= l;
+		this.z /= l;
 	}
 
 	/**
@@ -179,22 +195,10 @@ public class Vec {
 	 * @return the angle in radians in the range [0,PI]
 	 */
 	public final double angle(Vec v1) {
-		//TODO:
-		return Double.NaN;
-	}
-
-	/**
-	 * Computes the Euclidean distance between two points
-	 * 
-	 * @param a
-	 *            Point1
-	 * @param b
-	 *            Point2
-	 * @return Scalar
-	 */
-	static public double distance(Vec a, Vec b) {
-		//TODO:
-		return Double.NaN;
+		double dotProduct = this.dotProd(v1);
+		double aMag = this.length();
+		double bMag = v1.length();
+		return Math.acos(dotProduct / (aMag * bMag));
 	}
 
 	/**
@@ -207,8 +211,10 @@ public class Vec {
 	 * @return Vector1 x Vector2
 	 */
 	public static Vec crossProd(Vec a, Vec b) {	
-		//TODO: 
-		return null;
+		double cx = a.y*b.z - a.z*b.y;
+		double cy = a.z*b.x - a.x*b.z;
+		double cz = a.x*b.y - a.y*b.x;
+		return new Vec(cx, cy, cz);
 	}
 
 	/**
@@ -221,8 +227,9 @@ public class Vec {
 	 * @return a+b
 	 */
 	public static Vec add(Vec a, Vec b) {
-		//TODO:
-		return null;
+		Vec add = a.clone();
+		add.add(b);
+		return add;
 	}
 
 	/**
@@ -235,8 +242,9 @@ public class Vec {
 	 * @return a-b
 	 */
 	public static Vec sub(Vec a, Vec b) {
-		//TODO:
-		return null;
+		Vec sub = a.clone();
+		sub.sub(b);
+		return sub;
 	}
 
 	/**
@@ -247,8 +255,9 @@ public class Vec {
 	 * @return -1*a
 	 */
 	public static Vec negate(Vec a) {
-		//TODO:
-		return null;
+		Vec newA = a.clone();
+		newA.negate();
+		return newA;
 	}
 
 	/**
@@ -261,8 +270,9 @@ public class Vec {
 	 * @return s*a
 	 */
 	public static Vec scale(double s, Vec a) {
-		//TODO:
-		return null;
+		Vec scale = a.clone();
+		scale.scale(s);
+		return scale;
 	}
 
 	/**
@@ -275,8 +285,9 @@ public class Vec {
 	 * @return a.*b
 	 */
 	public static Vec scale(Vec a, Vec b) {
-		//TODO:
-		return null;
+		Vec pScale = a.clone();
+		pScale.scale(b);
+		return pScale;
 	}
 
 	/**
@@ -289,8 +300,7 @@ public class Vec {
 	 * @return a==b
 	 */
 	public static boolean equals(Vec a, Vec b) {
-		//TODO:
-		return false;
+		return a.equals(b);
 	}
 
 	/**
@@ -303,8 +313,7 @@ public class Vec {
 	 * @return a.b
 	 */
 	public static double dotProd(Vec a, Vec b) {
-		//TODO:
-		return Double.NaN;
+		return a.dotProd(b);
 	}
 
 	/**
