@@ -31,7 +31,7 @@ public class Camera implements IInitable{
 	
 	public Ray constructRayThroughPixel(double x, double y, double height, double width) {		
 		//TODO implement it
-		return new Ray();
+		return new Ray(new Point3D(), new Vec());
 	}
 
 	
