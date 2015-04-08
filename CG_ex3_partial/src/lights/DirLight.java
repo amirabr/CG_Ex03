@@ -12,6 +12,7 @@ import math.Vec;
  */
 public class DirLight extends Light {
 
+	// Direction of light in scene
 	private Vec direction;
 	
 	/**
@@ -38,7 +39,6 @@ public class DirLight extends Light {
 		} else {
 			color = new RGB(1, 1, 1);
 		}
-		
 		
 		// Initialize 'direction' attribute
 		if (!attributes.containsKey("direction")) {
