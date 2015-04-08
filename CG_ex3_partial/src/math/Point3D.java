@@ -47,6 +47,11 @@ public class Point3D extends Tuple {
 		return Math.sqrt(dx + dy + dz);
 	}
 	
+	/**
+	 * Construct a vector to another point.
+	 * @param p - the other point
+	 * @return a vector from this point to the other point
+	 */
 	public Vec vectorToAnotherPoint(Point3D p) {
 		return new Vec(p.x - this.x, p.y - this.y, p.z - this.z);
 	}

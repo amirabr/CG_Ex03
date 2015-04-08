@@ -21,10 +21,24 @@ public class Camera implements IInitable{
 	
 	private double screenDist;
 	private double screenWidth;
+	private double screenHeight;
 	//private double frustum;
 	
 	public Camera(Map<String, String> attributes) {
+		
+		// Initialize attributes from XML
 		init(attributes);
+		
+		// Make sure we have an orthogonal basis
+		right = Vec.crossProd(towards, up);
+		if (Vec.dotProd(towards, up) != 0) {
+			up = Vec.crossProd(towards, right);
+		}
+		
+		// Make sure we have an orthonormal basis
+		towards.normalize();
+		up.normalize();
+		right.normalize();
 	}
 	
 	public void init(Map<String, String> attributes) throws IllegalArgumentException {
@@ -45,18 +59,11 @@ public class Camera implements IInitable{
 			towards = eye.vectorToAnotherPoint(new Point3D(attributes.get("look-at")));
 		}
 		
-		// Initialize 'up' and 'right' attribute
-		// Make sure we have an orthonormal basis
+		// Initialize 'up' attribute
 		if (!attributes.containsKey("up-direction")) {
 			throw new IllegalArgumentException("Missing 'up-direction' attribute");
 		}
-		Vec tmpUp = new Vec(attributes.get("up-direction"));
-		right = Vec.crossProd(towards, tmpUp);
-		if (Vec.dotProd(towards, tmpUp) == 0) {
-			up = tmpUp;
-		} else {
-			up = Vec.crossProd(towards, right);
-		}
+		up = new Vec(attributes.get("up-direction"));
 	
 		// Initialize 'screen-dist' attribute
 		if (!attributes.containsKey("screen-dist")) {
@@ -84,20 +91,27 @@ public class Camera implements IInitable{
 	 */
 	public Ray constructRayThroughPixel(double x, double y, double height, double width) {		
 		
-		Point3D centerPixel2D; 	// Coordinate of central pixel of view plane in the view plane (2D)
-		Point3D centerPixel3D;  // Coordinate of central pixel of view plane in the scene (3D)
-		double pixelRatio;
+		Point3D centerPixel2D; 	// Coordinates of central pixel of view plane in the view plane (2D)
+		Point3D centerPixel3D;  // Coordinates of central pixel of view plane in the scene (3D)
+		Point3D desiredPixel3D; // Coordinates of desired pixel in the scene (3D)
 		
-		centerPixel3D = eye.addVector(towards);
+		double pixelRatio; 		// The actual size of a pixel in the scene
 		
-		return null;
+		Vec goUp; 				// How much to travel up to get from centerPixel to desiredPixel
+		Vec goRight; 			// How much to travel right to get from centerPixel to desiredPixel
+		Vec desiredVector; 		// The vector from eye to desiredPixel
+		
+		pixelRatio = screenWidth / width;
+		screenHeight = height * pixelRatio;
+		centerPixel2D = new Point3D(Math.floor(screenWidth/2), Math.floor(screenHeight/2), 0);
+		centerPixel3D = eye.addVector(Vec.scale(screenDist, towards));
+		
+		goUp 	= Vec.scale(y - centerPixel2D.y, Vec.scale(pixelRatio, up));
+		goRight = Vec.scale(x - centerPixel2D.x, Vec.scale(pixelRatio, right));
+		desiredPixel3D = centerPixel3D.addVector(goUp).addVector(goRight);
+		desiredVector = Point3D.vectorBetweenTwoPoints(eye, desiredPixel3D);
+		
+		return new Ray(eye, desiredVector);
 	}
 
-	
-	
-	
-	
-	
-	
-	
 }
