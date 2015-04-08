@@ -5,20 +5,13 @@ package math;
  * Vectors but also Points and Colors.
  * 
  */
-public class Vec {
-
-	/**
-	 * Vector data. Allowed to be accessed publicly for performance reasons
-	 */
-	public double x, y, z;
+public class Vec extends Tuple {
 
 	/**
 	 * Initialize vector to (0,0,0)
 	 */
 	public Vec() {
-		this.x = 0;
-		this.y = 0;
-		this.z = 0;
+		super();
 	}
 
 	/**
@@ -32,9 +25,7 @@ public class Vec {
 	 *            Scalar
 	 */
 	public Vec(double x, double y, double z) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
+		super(x, y, z);
 	}
 
 	/**
@@ -44,9 +35,7 @@ public class Vec {
 	 *            Vector
 	 */
 	public Vec(Vec v) {
-		this.x = v.x;
-		this.y = v.y;
-		this.z = v.z;
+		super(v);
 	}
 
 	/**
@@ -56,7 +45,7 @@ public class Vec {
 	 * @return The reflected vector
 	 */
 	public Vec reflect(Vec normal) {
-		Vec nor = normal.clone();
+		Vec nor = (Vec)normal.clone();
 		nor.scale(nor.dotProd(this) * (-2));
 		nor.add(this);
 		return nor;
@@ -176,17 +165,6 @@ public class Vec {
 	}
 
 	/**
-	 * Compares to a given vector
-	 * 
-	 * @param a
-	 *            Vector
-	 * @return True if have same values, false otherwise
-	 */
-	public boolean equals(Vec a) {
-		return ((a.x == x) && (a.y == y) && (a.z == z));
-	}
-
-	/**
 	 * Returns the angle in radians between this vector and the vector
 	 * parameter; the return value is constrained to the range [0,PI].
 	 * 
@@ -227,7 +205,7 @@ public class Vec {
 	 * @return a+b
 	 */
 	public static Vec add(Vec a, Vec b) {
-		Vec add = a.clone();
+		Vec add = (Vec)a.clone();
 		add.add(b);
 		return add;
 	}
@@ -242,7 +220,7 @@ public class Vec {
 	 * @return a-b
 	 */
 	public static Vec sub(Vec a, Vec b) {
-		Vec sub = a.clone();
+		Vec sub = (Vec)a.clone();
 		sub.sub(b);
 		return sub;
 	}
@@ -255,7 +233,7 @@ public class Vec {
 	 * @return -1*a
 	 */
 	public static Vec negate(Vec a) {
-		Vec newA = a.clone();
+		Vec newA = (Vec)a.clone();
 		newA.negate();
 		return newA;
 	}
@@ -270,7 +248,7 @@ public class Vec {
 	 * @return s*a
 	 */
 	public static Vec scale(double s, Vec a) {
-		Vec scale = a.clone();
+		Vec scale = (Vec)a.clone();
 		scale.scale(s);
 		return scale;
 	}
@@ -285,7 +263,7 @@ public class Vec {
 	 * @return a.*b
 	 */
 	public static Vec scale(Vec a, Vec b) {
-		Vec pScale = a.clone();
+		Vec pScale = (Vec)a.clone();
 		pScale.scale(b);
 		return pScale;
 	}
@@ -316,18 +294,4 @@ public class Vec {
 		return a.dotProd(b);
 	}
 
-	/**
-	 * Returns a string that contains the values of this vector. The form is
-	 * (x,y,z).
-	 * 
-	 * @return the String representation
-	 */
-	public String toString() {
-		return "(" + this.x + ", " + this.y + ", " + this.z + ")";
-	}
-
-	@Override
-	public Vec clone() {
-		return new Vec(this);
-	}
 }
