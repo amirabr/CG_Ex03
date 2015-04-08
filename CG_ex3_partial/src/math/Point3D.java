@@ -1,7 +1,5 @@
 package math;
 
-import java.util.Scanner;
-
 public class Point3D extends Tuple {
 
 	/**
@@ -25,13 +23,8 @@ public class Point3D extends Tuple {
 	 * Constructor, initializes point to given coordinates, in string representation.
 	 * @param v - string representation of coordinates
 	 */
-	public Point3D(String v) {
-		super();
-		Scanner s = new Scanner(v);
-		x = s.nextDouble();
-		y = s.nextDouble();
-		z = s.nextDouble();
-		s.close();
+	public Point3D(String p) {
+		super(p);
 	}
 	
 	/**

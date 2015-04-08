@@ -13,6 +13,6 @@ public interface IInitable {
 	 * 
 	 * @param attributes
 	 */
-	public void init(Map<String, String> attributes);
+	public void init(Map<String, String> attributes) throws IllegalArgumentException;
 
 }

@@ -1,5 +1,7 @@
 package math;
 
+import java.util.Scanner;
+
 /**
  * Super class to represent a 3-tuple.
  * To be inherited by Vec, Point3D and similar.
@@ -29,6 +31,18 @@ public class Tuple {
 		this.x = x;
 		this.y = y;
 		this.z = z;
+	}
+	
+	/**
+	 * Constructor, initializes tuple to given coordinates, in string representation.
+	 * @param t - string representation of coordinates
+	 */
+	public Tuple(String t) {
+		Scanner s = new Scanner(t);
+		x = s.nextDouble();
+		y = s.nextDouble();
+		z = s.nextDouble();
+		s.close();
 	}
 
 	/**

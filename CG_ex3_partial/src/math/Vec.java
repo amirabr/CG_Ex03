@@ -27,6 +27,16 @@ public class Vec extends Tuple {
 	public Vec(double x, double y, double z) {
 		super(x, y, z);
 	}
+	
+	/**
+	 * Initializes vector to given coordinates
+	 * 
+	 * @param v
+	 *            string representation of vector coordinates
+	 */	
+	public Vec(String v) {
+		super(v);
+	}
 
 	/**
 	 * Initialize vector values to given vector (copy by value)
