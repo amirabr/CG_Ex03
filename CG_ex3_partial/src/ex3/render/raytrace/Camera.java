@@ -82,11 +82,15 @@ public class Camera implements IInitable{
 	 * @param y
 	 * @return
 	 */
-	
-	
 	public Ray constructRayThroughPixel(double x, double y, double height, double width) {		
-		//TODO implement it
-		return new Ray(new Point3D(), new Vec());
+		
+		Point3D centerPixel2D; 	// Coordinate of central pixel of view plane in the view plane (2D)
+		Point3D centerPixel3D;  // Coordinate of central pixel of view plane in the scene (3D)
+		double pixelRatio;
+		
+		centerPixel3D = eye.addVector(towards);
+		
+		return null;
 	}
 
 	

@@ -52,6 +52,25 @@ public class Point3D extends Tuple {
 	}
 	
 	/**
+	 * Adds vector to point. Result is point.
+	 * @param v - the vector to add
+	 * @return the point at the end of the vector
+	 */
+	public Point3D addVector(Vec v) {
+		return new Point3D(this.x + v.x, this.y + v.y, this.z + v.z);
+	}
+	
+	/**
+	 * Adds a vector to a point. Result is a point.
+	 * @param p - the point
+	 * @param v - the vector
+	 * @return the point at the end of the vector
+	 */
+	public static Point3D addVectorToPoint(Point3D p, Vec v) {
+		return p.addVector(v);
+	}
+	
+	/**
 	 * Distance between two points.
 	 * @param p1 - the first point
 	 * @param p2 - the second point
