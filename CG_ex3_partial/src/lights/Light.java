@@ -6,7 +6,7 @@ import ex3.render.raytrace.IInitable;
 
 public abstract class Light implements IInitable {
 
-	protected RGB intensity;
+	protected RGB color;
 	
 	public abstract RGB getIntensityAtPoint(Point3D p);
 	
