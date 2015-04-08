@@ -88,5 +88,15 @@ public class RGB extends Tuple {
 	public double realBlue() {
 		return blue() * 255;
 	}
+	
+	/**
+	 * Scale the RGB vector by a scalar s.
+	 * @param s - the scalar
+	 * @param rgb - the RGB vector
+	 * @return the scaled RGB vector
+	 */
+	public static RGB scale(double s, RGB rgb) {
+		return new RGB(rgb.red() * s, rgb.green() * s, rgb.blue() * s);
+	}
 
 }

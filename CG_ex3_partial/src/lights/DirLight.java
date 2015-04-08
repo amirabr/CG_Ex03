@@ -16,7 +16,7 @@ public class DirLight extends Light {
 	
 	/**
 	 * Constructor.
-	 * @param attributes - user attributes for camera
+	 * @param attributes - user attributes for DirLight
 	 */
 	public DirLight(Map<String, String> attributes) {
 		
@@ -27,15 +27,18 @@ public class DirLight extends Light {
 	
 	/**
 	 * Initialize attributes from XML.
-	 * @param attributes - user attributes for camera
+	 * @param attributes - user attributes for DirLight
 	 */
 	public void init(Map<String, String> attributes) throws IllegalArgumentException {
 		
 		// Initialize 'color' attribute
-		if (!attributes.containsKey("color")) {
-			throw new IllegalArgumentException("Missing 'color' attribute");
+		// Default is (1, 1, 1)
+		if (attributes.containsKey("color")) {
+			color = new RGB(attributes.get("color"));
+		} else {
+			color = new RGB(1, 1, 1);
 		}
-		color = new RGB(attributes.get("color"));
+		
 		
 		// Initialize 'direction' attribute
 		if (!attributes.containsKey("direction")) {
