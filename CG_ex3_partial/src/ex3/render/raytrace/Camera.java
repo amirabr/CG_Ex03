@@ -13,17 +13,24 @@ import math.Vec;
  */
 public class Camera implements IInitable{
 
-	private Point3D eye;
+	// Center of the lens
+	private Point3D eye; 
 	
+	// Orthonormal basis for the camera's axis system
 	private Vec towards;
 	private Vec up;
 	private Vec right;
 	
+	// View plane properties
 	private double screenDist;
 	private double screenWidth;
 	private double screenHeight;
 	//private double frustum;
 	
+	/**
+	 * Constructor.
+	 * @param attributes - user attributes for camera
+	 */
 	public Camera(Map<String, String> attributes) {
 		
 		// Initialize attributes from XML
@@ -41,6 +48,10 @@ public class Camera implements IInitable{
 		right.normalize();
 	}
 	
+	/**
+	 * Initialize attributes from XML.
+	 * @param attributes - user attributes for camera
+	 */
 	public void init(Map<String, String> attributes) throws IllegalArgumentException {
 		
 		// Initialize 'eye' attribute
@@ -85,11 +96,13 @@ public class Camera implements IInitable{
 	 * Transforms image xy coordinates to view pane xyz coordinates. Returns the
 	 * ray that goes through it.
 	 * 
-	 * @param x
-	 * @param y
-	 * @return
+	 * @param x - the X coordinate in the view plane matrix
+	 * @param y - the Y coordinate in the view plane matrix
+	 * @param width - the width of the image
+	 * @param height - the height of the image
+	 * @return the Ray that goes from the eye, to the scene, and through the pixel at (x,y)
 	 */
-	public Ray constructRayThroughPixel(double x, double y, double height, double width) {		
+	public Ray constructRayThroughPixel(double x, double y, double width, double height) {		
 		
 		Point3D centerPixel2D; 	// Coordinates of central pixel of view plane in the view plane (2D)
 		Point3D centerPixel3D;  // Coordinates of central pixel of view plane in the scene (3D)
