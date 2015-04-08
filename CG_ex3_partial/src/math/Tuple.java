@@ -5,7 +5,6 @@ import java.util.Scanner;
 /**
  * Super class to represent a 3-tuple.
  * To be inherited by Vec, Point3D and similar.
- * @author amir
  *
  */
 public class Tuple {

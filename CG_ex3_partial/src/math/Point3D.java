@@ -1,5 +1,9 @@
 package math;
 
+/**
+ * Represents a point in 3D space.
+ *
+ */
 public class Point3D extends Tuple {
 
 	/**
@@ -106,4 +110,3 @@ public class Point3D extends Tuple {
 	}
 
 }
-

@@ -1,11 +1,9 @@
 package ex3.render.raytrace;
 
 import java.util.Map;
-
 import math.Point3D;
 import math.Ray;
 import math.Vec;
-
 
 /**
  * Represents the scene's camera.
@@ -46,6 +44,7 @@ public class Camera implements IInitable{
 		towards.normalize();
 		up.normalize();
 		right.normalize();
+		
 	}
 	
 	/**
@@ -82,7 +81,7 @@ public class Camera implements IInitable{
 		}
 		screenDist = Double.parseDouble(attributes.get("screen-dist"));
 		
-		// Initialize 'screen-dist' attribute
+		// Initialize 'screen-width' attribute
 		// Default is 2.0
 		if (!attributes.containsKey("screen-width")) {
 			screenWidth = 2.0;
@@ -114,17 +113,21 @@ public class Camera implements IInitable{
 		Vec goRight; 			// How much to travel right to get from centerPixel to desiredPixel
 		Vec desiredVector; 		// The vector from eye to desiredPixel
 		
+		// Find the center pixel of the view plane
 		pixelRatio = screenWidth / width;
 		screenHeight = height * pixelRatio;
 		centerPixel2D = new Point3D(Math.floor(screenWidth/2), Math.floor(screenHeight/2), 0);
 		centerPixel3D = eye.addVector(Vec.scale(screenDist, towards));
 		
+		// Find the desired pixel in the view plane
 		goUp 	= Vec.scale(y - centerPixel2D.y, Vec.scale(pixelRatio, up));
 		goRight = Vec.scale(x - centerPixel2D.x, Vec.scale(pixelRatio, right));
 		desiredPixel3D = centerPixel3D.addVector(goUp).addVector(goRight);
 		desiredVector = Point3D.vectorBetweenTwoPoints(eye, desiredPixel3D);
 		
+		// Cast a ray through it
 		return new Ray(eye, desiredVector);
+		
 	}
 
 }

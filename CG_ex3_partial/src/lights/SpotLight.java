@@ -91,7 +91,7 @@ public class SpotLight extends Light {
 		Vec L = Point3D.vectorBetweenTwoPoints(position, p);
 		
 		// Calculate distance and angle weakening factor 
-		double weakening =  Vec.dotProd(direction, L) / (kConst + kLinear*d + kQuadratic*d*d);
+		double weakening = Vec.dotProd(direction, L) / (kConst + kLinear*d + kQuadratic*d*d);
 		
 		// Return the result
 		return RGB.scale(weakening, color);

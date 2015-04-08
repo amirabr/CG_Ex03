@@ -10,7 +10,8 @@ import ex3.render.raytrace.IInitable;
  */
 public abstract class Light implements IInitable {
 
-	protected RGB color; 	// Intensity
+	// Intensity of light
+	protected RGB color;
 	
 	/**
 	 * Calculate the intensity at a given point by this light source
