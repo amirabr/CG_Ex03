@@ -96,7 +96,7 @@ public class Poly extends Surface {
 	 * @return the point of intersection, or null otherwise
 	 */
 	@Override
-	public Point3D intersect(Ray ray) {
+	public Point3D intersectsWith(Ray ray) {
 		return null;
 	}
 

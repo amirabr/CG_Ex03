@@ -90,6 +90,6 @@ public abstract class Surface implements IInitable {
 	 * @param ray - the ray
 	 * @return the point of intersection, or null otherwise
 	 */
-	public abstract Point3D intersect(Ray ray);
+	public abstract Point3D intersectsWith(Ray ray);
 
 }
