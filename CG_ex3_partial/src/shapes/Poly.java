@@ -78,7 +78,7 @@ public class Poly extends Surface {
 		Vec a = Point3D.vectorBetweenTwoPoints(this.p[0], this.p[1]);
 		
 		// Calculate the vector p1->p2
-		Vec b = Point3D.vectorBetweenTwoPoints(this.p[1], this.p[2]);
+		Vec b = Point3D.vectorBetweenTwoPoints(this.p[0], this.p[2]);
 		
 		// Calculate the cross product of the two
 		Vec normal = Vec.crossProd(a, b);
