@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 import shapes.Disc;
+import shapes.Intersection;
 import shapes.Poly;
 import shapes.Sphere;
 import shapes.Surface;
@@ -86,8 +87,9 @@ public class Scene implements IInitable {
 	 * @param ray
 	 * @return
 	 */
-	public void findIntersection(Ray ray) {
-		//TODO find ray intersection with scene, change the output type, add whatever you need
+	public Intersection findIntersection(Ray ray) {
+		
+		return null;
 	}
 
 	public Vec calcColor(Ray ray, int level) {

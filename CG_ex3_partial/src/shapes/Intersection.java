@@ -4,7 +4,10 @@ import math.Point3D;
 import math.Ray;
 import math.Vec;
 
-public class Intersections {
+public class Intersection {
+	
+	public Surface object;
+	public Point3D point;
 	
 	public static Point3D raySphereIntersection(Ray ray, Sphere sphere) {
 		
