@@ -8,6 +8,7 @@ import java.util.Scanner;
 import shapes.Surface;
 import lights.Light;
 import math.Point3D;
+import math.RGB;
 import math.Ray;
 import math.Vec;
 
@@ -17,20 +18,60 @@ import math.Vec;
  */
 public class Scene implements IInitable {
 
-	protected List<Surface> surfaces;
-	protected List<Light> lights;
-	protected Camera camera;
+	private RGB bgColor; 				// Background color of the scene
+	private String bgTexture; 			// Background image of the scene
+	private int maxRecLvl; 				// Max number of recursive rays when calculating reflections
+	private RGB ambientLight; 			// Ambient light of the scene
+	
+	protected List<Surface> surfaces; 	// All of the surfaces in the scene
+	protected List<Light> lights; 	 	// All of the lights in the scene
+	protected Camera camera; 			// The camera of the scene
 
+	/**
+	 * Constructor.
+	 */
 	public Scene() {
 
-		surfaces = new LinkedList<Surface>();
-		lights = new LinkedList<Light>();
-		camera = new Camera();
+		surfaces = new LinkedList<Surface>(); 	// No surfaces
+		lights = new LinkedList<Light>(); 		// No lights
+		camera = new Camera(); 					// Empty camera
+		
 	}
 
 	public void init(Map<String, String> attributes) {
 	
-		//TODO store xml scene properties in members (parameters just below scene in the XML)
+		// Initialize 'background-col' attribute
+		// Default is (0, 0, 0)
+		if (attributes.containsKey("background-col")) {
+			bgColor = new RGB(attributes.get("background-col"));
+		} else {
+			bgColor = new RGB(0, 0, 0);
+		}
+		
+		// Initialize 'background-tex' attribute
+		// Default is null
+		if (attributes.containsKey("background-tex")) {
+			bgTexture = attributes.get("background-tex");
+		} else {
+			bgTexture = null;
+		}
+		
+		// Initialize 'max-recursion-level' attribute
+		// Default is 10
+		if (attributes.containsKey("max-recursion-level")) {
+			maxRecLvl = Integer.parseInt(attributes.get("max-recursion-level"));
+		} else {
+			maxRecLvl = 10;
+		}
+		
+		// Initialize 'ambient-light' attribute
+		// Default is (0, 0, 0)
+		if (attributes.containsKey("ambient-light")) {
+			ambientLight = new RGB(attributes.get("ambient-light"));
+		} else {
+			ambientLight = new RGB(0, 0, 0);
+		}
+		
 	}
 
 	/**
