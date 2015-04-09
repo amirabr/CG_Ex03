@@ -65,8 +65,10 @@ public class Point3D extends Tuple {
 	 * @param v - the vector to add
 	 * @return the point at the end of the vector
 	 */
-	public Point3D addVector(Vec v) {
-		return new Point3D(this.x + v.x, this.y + v.y, this.z + v.z);
+	public void addVector(Vec v) {
+		this.x += v.x;
+		this.y += v.y;
+		this.z += v.z;
 	}
 	
 	/**
@@ -76,7 +78,9 @@ public class Point3D extends Tuple {
 	 * @return the point at the end of the vector
 	 */
 	public static Point3D addVectorToPoint(Point3D p, Vec v) {
-		return p.addVector(v);
+		Point3D newP = (Point3D)p.clone();
+		newP.addVector(v);
+		return newP;
 	}
 	
 	/**

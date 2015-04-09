@@ -33,7 +33,8 @@ public class Intersections {
         double minT = Math.min(t1, t2);
         
         // Return the point of intersection
-    	return ray.p.addVector(Vec.scale(minT, ray.v));
+    	//return ray.p.addVector(Vec.scale(minT, ray.v));
+        return Point3D.addVectorToPoint(ray.p, Vec.scale(minT, ray.v));
         
 	}
 	
