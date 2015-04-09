@@ -97,6 +97,10 @@ public class SpotLight extends Light {
 	
 	}
 	
+	/**
+	 * Getter for position
+	 * @return position
+	 */
 	public Point3D getPosition() {
 		return position;
 	}

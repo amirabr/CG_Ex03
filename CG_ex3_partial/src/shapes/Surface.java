@@ -91,22 +91,42 @@ public abstract class Surface implements IInitable {
 	 */
 	public abstract Point3D intersectsWith(Ray ray);
 	
+	/**
+	 * Getter.
+	 * @return mtlEmission
+	 */
 	public Vec getEmissionCoefficient() {
 		return mtlEmission;
 	}
 	
+	/**
+	 * Getter.
+	 * @return mtlAmbient
+	 */
 	public Vec getAmbientCoefficient() {
 		return mtlAmbient;
 	}
 	
+	/**
+	 * Getter.
+	 * @return mtlDiffuse
+	 */
 	public Vec getDiffuseCoefficient() {
 		return mtlDiffuse;
 	}
 	
+	/**
+	 * Getter.
+	 * @return mtlSpecular
+	 */
 	public Vec getSpecularCoefficient() {
 		return mtlSpecular;
 	}
 	
+	/**
+	 * Getter.
+	 * @return mtlShininess
+	 */
 	public double getShininessCoefficient() {
 		return mtlShininess;
 	}

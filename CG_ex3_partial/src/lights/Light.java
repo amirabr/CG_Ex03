@@ -20,6 +20,11 @@ public abstract class Light implements IInitable {
 	 */
 	public abstract Vec getIntensityAtPoint(Point3D p);
 	
+	/**
+	 * Is the name of the class specified of type Light?
+	 * @param type - a string with a name of a class
+	 * @return true if the class is a subclass of Light, false otherwise
+	 */
 	public static boolean isLight(String type) {
 		type = type.toLowerCase();
 		return type.equals("dir-light") || type.equals("omni-light") || type.equals("spot-light"); 

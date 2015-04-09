@@ -82,10 +82,18 @@ public class Sphere extends Surface {
 		return null;
 	}
 	
+	/**
+	 * Getter for center;
+	 * @return center
+	 */
 	public Point3D getCenter() {
 		return center;
 	}
 	
+	/**
+	 * Getter for radius
+	 * @return radius
+	 */
 	public double getRadius() {
 		return radius;
 	}

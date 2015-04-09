@@ -85,6 +85,10 @@ public class OmniLight extends Light {
 	
 	}
 	
+	/**
+	 * Getter for position
+	 * @return position
+	 */
 	public Point3D getPosition() {
 		return position;
 	}

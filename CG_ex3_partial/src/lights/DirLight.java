@@ -55,6 +55,10 @@ public class DirLight extends Light {
 		return color;
 	}
 	
+	/**
+	 * Getter for direction
+	 * @return direction
+	 */
 	public Vec getDirection() {
 		return direction;
 	}

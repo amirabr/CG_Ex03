@@ -81,10 +81,11 @@ public class Scene implements IInitable {
 	}
 
 	/**
-	 * Send ray return the nearest intersection. Return null if no intersection
-	 * 
-	 * @param ray
-	 * @return
+	 * Shoot the ray into the scene, see if it hits anything.
+	 * If it hits multiple objects, return the closest one.
+	 * If it hits nothing, return null.
+	 * @param ray - the ray
+	 * @return intersecting point and object
 	 */
 	public Intersection findIntersection(Ray ray) {
 		
@@ -132,6 +133,17 @@ public class Scene implements IInitable {
 		return new Intersection(minObject, minPoint);
 	}
 
+	/**
+	 * Calculate the color where the ray points at.
+	 * If it hits an object, calculate the color there.
+	 * If it hits nothing, calculate the background color/texture.
+	 * 
+	 * NOTE: No support for background texture yet, just background color!
+	 *  
+	 * @param ray - the ray
+	 * @param level - currect recursion level
+	 * @return the color at that point
+	 */
 	public Vec calcColor(Ray ray, int level) {
 		
 		// Find the intersection of the ray with the closest object in the scene
@@ -169,7 +181,6 @@ public class Scene implements IInitable {
 	/**
 	 * Add objects to the scene by name.
 	 * Object can be of type Light or type Surface.
-	 * 
 	 * @param name - Object's name
 	 * @param attributes - Object's attributes
 	 */
@@ -212,21 +223,37 @@ public class Scene implements IInitable {
 	}
 
 	/**
-	 * Initialize the camera
+	 * Initialize the camera.
 	 * @param attributes - user attributes for Camera
 	 */
 	public void setCameraAttributes(Map<String, String> attributes) {
 		camera.init(attributes);
 	}
 	
+	/**
+	 * Calculate the amount of emission color at the intersection point.
+	 * @param intersection point
+	 * @return emission factor
+	 */
 	private Vec calcEmissionColor(Intersection intersection) {
 		return intersection.object.getEmissionCoefficient();
 	}
 	
+	/**
+	 * Calculate the amount of ambient color at the intersection point.
+	 * @param intersection point
+	 * @return ambient factor
+	 */
 	private Vec calcAmbientColor(Intersection intersection) {
 		return Vec.scale(intersection.object.getAmbientCoefficient(), ambientLight);
 	}
 	
+	/**
+	 * Calculate the amount of diffuse color at the intersection point,
+	 * by the specified light source.
+	 * @param intersection point
+	 * @return diffuse factor
+	 */
 	private Vec calcDiffuseColor(Intersection intersection, Light light) {
 		
 		Surface object = intersection.object;
@@ -268,6 +295,12 @@ public class Scene implements IInitable {
 		
 	}
 	
+	/**
+	 * Calculate the amount of specular color at the intersection point,
+	 * by the specified light source.
+	 * @param intersection point
+	 * @return specular factor
+	 */
 	private Vec calcSpecularColor(Intersection intersection, Light light) {
 		
 		Surface object = intersection.object;
@@ -300,7 +333,7 @@ public class Scene implements IInitable {
 		Vec R = L.reflect(N);
 		
 		// Calculate the dot product between them
-		double dotProduct = Vec.dotProd(N, L);
+		double dotProduct = Vec.dotProd(N, R);
 		
 		// Raise it to the power of n
 		double dotProductN = Math.pow(dotProduct, object.getShininessCoefficient());
