@@ -4,6 +4,10 @@ import java.util.Map;
 import math.Point3D;
 import math.Vec;
 
+/**
+ * Represents a sphere.
+ *
+ */
 public class Sphere extends Surface {
 	
 	private Point3D center; 	// The center of the sphere
@@ -15,7 +19,10 @@ public class Sphere extends Surface {
 	 */
 	public Sphere(Map<String, String> attributes) {
 		
-		// Initialize attributes from XML
+		// Initialize surface attributes
+		commonInit(attributes);
+		
+		// Initialize shape attributes
 		init(attributes);
 		
 	}
@@ -26,9 +33,6 @@ public class Sphere extends Surface {
 	 */
 	@Override
 	public void init(Map<String, String> attributes) throws IllegalArgumentException {
-		
-		// Initialize surface attributes
-		commonInit(attributes);
 		
 		// Initialize 'center' attribute
 		if (!attributes.containsKey("center")) {
@@ -46,7 +50,7 @@ public class Sphere extends Surface {
 
 	/**
 	 * Get the normal to the surface at a specific point.
-	 * The normal of each point on the sphere’s surface is
+	 * The normal of each point on the sphere's surface is
 	 * the normalized subtraction of the point and the center.
 	 * @param p - the point
 	 * @return the normal at that point
