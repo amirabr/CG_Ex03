@@ -9,6 +9,15 @@ public class Intersection {
 	public Surface object;
 	public Point3D point;
 	
+	public Intersection() {
+		
+	}
+	
+	public Intersection(Surface object, Point3D point) {
+		this.object = object;
+		this.point = point;
+	}
+	
 	public static Point3D raySphereIntersection(Ray ray, Sphere sphere) {
 		
 		Vec fromOtoP0 = Point3D.vectorBetweenTwoPoints(sphere.getCenter(), ray.p);

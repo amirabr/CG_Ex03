@@ -89,7 +89,48 @@ public class Scene implements IInitable {
 	 */
 	public Intersection findIntersection(Ray ray) {
 		
-		return null;
+		double minDistance = Double.MAX_VALUE;
+		Surface minObject = null;
+		Point3D minPoint = null;
+		Point3D p;
+		
+		// Iterate through all objects in the scene
+		for (Surface obj : surfaces) {
+			
+			// Find their intersection with the object
+			if (obj instanceof Disc) {
+				p = Intersection.rayDiscIntersection(ray, (Disc)obj);
+			} else if (obj instanceof Sphere) {
+				p = Intersection.raySphereIntersection(ray, (Sphere)obj);
+			} else {
+				p = Intersection.rayPolyIntersection(ray, (Poly)obj);
+			}
+			
+			// If no intersection happened, skip to the next object
+			if (p == null) {
+				continue;
+			}
+			
+			// Calculate the distance between the beginning of the ray
+			// and the intersection point with the sphere
+			double dist = Point3D.distance(ray.p, p);
+			
+			// If its closer than the current minimun, save it
+			if (dist < minDistance) {
+				minDistance = dist;
+				minObject = obj;
+				minPoint = p;
+			}
+			
+		}
+		
+		// If no intersection happened, return null
+		if (minObject == null) {
+			return null;
+		}
+		
+		// Else, return the intersection
+		return new Intersection(minObject, minPoint);
 	}
 
 	public Vec calcColor(Ray ray, int level) {
