@@ -5,8 +5,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import shapes.Disc;
+import shapes.Poly;
+import shapes.Sphere;
 import shapes.Surface;
+import lights.DirLight;
 import lights.Light;
+import lights.OmniLight;
+import lights.SpotLight;
 import math.Point3D;
 import math.RGB;
 import math.Ray;
@@ -90,37 +96,47 @@ public class Scene implements IInitable {
 	}
 
 	/**
-	 * Add objects to the scene by name
+	 * Add objects to the scene by name.
+	 * Object can be of type Light or type Surface.
 	 * 
-	 * @param name Object's name
-	 * @param attributes Object's attributes
+	 * @param name - Object's name
+	 * @param attributes - Object's attributes
 	 */
 	public void addObjectByName(String name, Map<String, String> attributes) {
-		//TODO this adds all objects to scene except the camera
-		//here is some code example for adding a surface or a light. 
-		//you can change everything and if you don't want this method, delete it
 		
-//		Surface surface = null;
-//		Light light = null;
-//	
-//		if ("sphere".equals(name))
-//			surface = new Sphere();
-//		
-//		
-//		if ("omni-light".equals(name))
-//			light = new OmniLight();
-//
-//		//adds a surface to the list of surfaces
-//		if (surface != null) {
-//			surface.init(attributes);
-//			surfaces.add(surface);
-//		}
-//		
-		//adds a light to the list of lights
-//		if (light != null) {
-//			light.init(attributes);
-//			lights.add(light);
-//		}
+		// Avoid unnecessary errors
+		name = name.toLowerCase();
+		
+		// Is it Light or is it Surface?
+		if (Light.isLight(name)) {
+			
+			Light light;
+			
+			if (name.equals("dir-light")) {
+				light = new DirLight(attributes);
+			} else if (name.equals("omni-light")) {
+				light = new OmniLight(attributes);
+			} else {
+				light = new SpotLight(attributes);
+			}
+			
+			lights.add(light);
+			
+		} else {
+			
+			Surface surface;
+			
+			if (name.equals("sphere")) {
+				surface = new Sphere(attributes);
+			} else if (name.equals("disc")) {
+				surface = new Disc(attributes);
+			} else {
+				surface = new Poly(attributes);
+			}
+			
+			surfaces.add(surface);
+			
+		}
 
 	}
 

@@ -20,4 +20,9 @@ public abstract class Light implements IInitable {
 	 */
 	public abstract RGB getIntensityAtPoint(Point3D p);
 	
+	public static boolean isLight(String type) {
+		type = type.toLowerCase();
+		return type.equals("dir-light") || type.equals("omni-light") || type.equals("spot-light"); 
+	}
+	
 }
