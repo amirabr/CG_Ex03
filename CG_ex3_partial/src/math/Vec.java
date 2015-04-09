@@ -303,5 +303,15 @@ public class Vec extends Tuple {
 	public static double dotProd(Vec a, Vec b) {
 		return a.dotProd(b);
 	}
+	
+	/**
+	 * Check if two vectors are linearly dependent 
+	 * @param a - the first vector
+	 * @param b - the second vector
+	 * @return true if they are, false otherwise
+	 */
+	public static boolean linearlyDependent(Vec a, Vec b) {
+		return (a.x / b.x == a.y / b.y) && (a.y / b.y == a.z / b.z);
+	}
 
 }
