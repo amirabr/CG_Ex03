@@ -120,13 +120,11 @@ public class Camera implements IInitable{
 		pixelRatio = screenWidth / width;
 		screenHeight = height * pixelRatio;
 		centerPixel2D = new Point3D(Math.floor(screenWidth/2), Math.floor(screenHeight/2), 0);
-		//centerPixel3D = eye.addVector(Vec.scale(screenDist, towards));
 		centerPixel3D = Point3D.addVectorToPoint(eye, Vec.scale(screenDist, towards));
 		
 		// Find the desired pixel in the view plane
 		goUp 	= Vec.scale(y - centerPixel2D.y, Vec.scale(pixelRatio, up));
 		goRight = Vec.scale(x - centerPixel2D.x, Vec.scale(pixelRatio, right));
-		//desiredPixel3D = centerPixel3D.addVector(goUp).addVector(goRight);
 		desiredPixel3D = Point3D.addVectorToPoint(Point3D.addVectorToPoint(centerPixel3D, goRight), goUp);  
 		desiredVector = Point3D.vectorBetweenTwoPoints(eye, desiredPixel3D);
 		
