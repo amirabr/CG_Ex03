@@ -347,4 +347,8 @@ public class Scene implements IInitable {
 		return IS;
 		
 	}
+	
+	public Ray castRay(double x, double y, double width, double height) {
+		return camera.constructRayThroughPixel(x, y, width, height);
+	}
 }
