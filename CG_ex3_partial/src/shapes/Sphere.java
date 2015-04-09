@@ -74,5 +74,13 @@ public class Sphere extends Surface {
 	public Point3D intersectsWith(Ray ray) {
 		return null;
 	}
+	
+	public Point3D getCenter() {
+		return center;
+	}
+	
+	public double getRadius() {
+		return radius;
+	}
 
 }
