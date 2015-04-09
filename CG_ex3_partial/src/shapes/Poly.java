@@ -25,6 +25,13 @@ public class Poly extends Surface {
 	
 	/**
 	 * Constructor.
+	 */
+	public Poly() {
+		
+	}
+	
+	/**
+	 * Constructor.
 	 * @param attributes - user attributes for Surface
 	 */
 	public Poly(Map<String, String> attributes) {

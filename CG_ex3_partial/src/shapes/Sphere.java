@@ -17,6 +17,13 @@ public class Sphere extends Surface {
 
 	/**
 	 * Constructor.
+	 */
+	public Sphere() {
+		
+	}
+	
+	/**
+	 * Constructor.
 	 * @param attributes - user attributes for Sphere
 	 */
 	public Sphere(Map<String, String> attributes) {

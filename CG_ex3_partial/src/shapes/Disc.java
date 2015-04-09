@@ -17,6 +17,13 @@ public class Disc extends Sphere {
 	
 	/**
 	 * Constructor.
+	 */
+	public Disc() {
+		super();
+	}
+	
+	/**
+	 * Constructor.
 	 * @param attributes - user attributes for Disc
 	 */
 	public Disc(Map<String, String> attributes) {
