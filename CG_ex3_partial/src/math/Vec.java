@@ -1,17 +1,23 @@
 package math;
 
+import java.util.Scanner;
+
 /**
  * 3D vector class that contains three doubles. Could be used to represent
  * Vectors but also Points and Colors.
  * 
  */
-public class Vec extends Tuple {
+public class Vec {
+	
+	public double x, y, z;
 
 	/**
 	 * Initialize vector to (0,0,0)
 	 */
 	public Vec() {
-		super();
+		this.x = 0;
+		this.y = 0;
+		this.z = 0;
 	}
 
 	/**
@@ -25,7 +31,9 @@ public class Vec extends Tuple {
 	 *            Scalar
 	 */
 	public Vec(double x, double y, double z) {
-		super(x, y, z);
+		this.x = x;
+		this.y = y;
+		this.z = z;
 	}
 	
 	/**
@@ -35,7 +43,11 @@ public class Vec extends Tuple {
 	 *            string representation of vector coordinates
 	 */	
 	public Vec(String v) {
-		super(v);
+		Scanner s = new Scanner(v);
+		x = s.nextDouble();
+		y = s.nextDouble();
+		z = s.nextDouble();
+		s.close();
 	}
 
 	/**
@@ -45,7 +57,9 @@ public class Vec extends Tuple {
 	 *            Vector
 	 */
 	public Vec(Vec v) {
-		super(v);
+		this.x = v.x;
+		this.y = v.y;
+		this.z = v.z;
 	}
 
 	/**
@@ -55,7 +69,7 @@ public class Vec extends Tuple {
 	 * @return The reflected vector
 	 */
 	public Vec reflect(Vec normal) {
-		Vec nor = (Vec)normal.clone();
+		Vec nor = normal.clone();
 		nor.scale(nor.dotProd(this) * (-2));
 		nor.add(this);
 		return nor;
@@ -215,7 +229,7 @@ public class Vec extends Tuple {
 	 * @return a+b
 	 */
 	public static Vec add(Vec a, Vec b) {
-		Vec add = (Vec)a.clone();
+		Vec add = a.clone();
 		add.add(b);
 		return add;
 	}
@@ -230,7 +244,7 @@ public class Vec extends Tuple {
 	 * @return a-b
 	 */
 	public static Vec sub(Vec a, Vec b) {
-		Vec sub = (Vec)a.clone();
+		Vec sub = a.clone();
 		sub.sub(b);
 		return sub;
 	}
@@ -243,7 +257,7 @@ public class Vec extends Tuple {
 	 * @return -1*a
 	 */
 	public static Vec negate(Vec a) {
-		Vec newA = (Vec)a.clone();
+		Vec newA = a.clone();
 		newA.negate();
 		return newA;
 	}
@@ -258,7 +272,7 @@ public class Vec extends Tuple {
 	 * @return s*a
 	 */
 	public static Vec scale(double s, Vec a) {
-		Vec scale = (Vec)a.clone();
+		Vec scale = a.clone();
 		scale.scale(s);
 		return scale;
 	}
@@ -273,7 +287,7 @@ public class Vec extends Tuple {
 	 * @return a.*b
 	 */
 	public static Vec scale(Vec a, Vec b) {
-		Vec pScale = (Vec)a.clone();
+		Vec pScale = a.clone();
 		pScale.scale(b);
 		return pScale;
 	}
@@ -312,6 +326,30 @@ public class Vec extends Tuple {
 	 */
 	public static boolean linearlyDependent(Vec a, Vec b) {
 		return (a.x / b.x == a.y / b.y) && (a.y / b.y == a.z / b.z);
+	}
+	
+	/**
+	 * Returns new tuple instance with identical coordinates.
+	 */
+	@Override
+	public Vec clone() {
+		return new Vec(this);
+	}
+	
+	/**
+	 * Compares tuple to another tuple.
+	 * @param t - other tuple
+	 * @return true if they have the same coordinates, false otherwise 
+	 */
+	public boolean equals(Vec v) {
+		return ((this.x == v.x) && (this.y == v.y) && (this.z == v.z));
+	}
+	
+	/**
+	 * Returns a string representation of the tuple, in (x, y, z) format.
+	 */
+	public String toString() {
+		return "(" + this.x + ", " + this.y + ", " + this.z + ")";
 	}
 
 }

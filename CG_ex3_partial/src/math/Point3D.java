@@ -1,16 +1,22 @@
 package math;
 
+import java.util.Scanner;
+
 /**
  * Represents a point in 3D space.
  *
  */
-public class Point3D extends Tuple {
+public class Point3D {
+	
+	public double x, y, z;
 
 	/**
 	 * Default constructor, initializes point to (0, 0, 0).
 	 */
 	public Point3D() {
-		super();
+		this.x = 0;
+		this.y = 0;
+		this.z = 0;
 	}
 	
 	/**
@@ -20,7 +26,9 @@ public class Point3D extends Tuple {
 	 * @param z - z coordinate
 	 */
 	public Point3D(double x, double y, double z) {
-		super(x, y, z);
+		this.x = x;
+		this.y = y;
+		this.z = z;
 	}
 
 	/**
@@ -28,7 +36,11 @@ public class Point3D extends Tuple {
 	 * @param v - string representation of coordinates
 	 */
 	public Point3D(String p) {
-		super(p);
+		Scanner s = new Scanner(p);
+		x = s.nextDouble();
+		y = s.nextDouble();
+		z = s.nextDouble();
+		s.close();
 	}
 	
 	/**
@@ -36,7 +48,9 @@ public class Point3D extends Tuple {
 	 * @param p - other point
 	 */
 	public Point3D(Point3D p) {
-		super(p);
+		this.x = p.x;
+		this.y = p.y;
+		this.z = p.z;
 	}
 	
 	/**
@@ -78,7 +92,7 @@ public class Point3D extends Tuple {
 	 * @return the point at the end of the vector
 	 */
 	public static Point3D addVectorToPoint(Point3D p, Vec v) {
-		Point3D newP = (Point3D)p.clone();
+		Point3D newP = p.clone();
 		newP.addVector(v);
 		return newP;
 	}
@@ -111,6 +125,30 @@ public class Point3D extends Tuple {
 	 */
 	public static boolean equals(Point3D p1, Point3D p2) {
 		return p1.equals(p2);
+	}
+	
+	/**
+	 * Compares tuple to another tuple.
+	 * @param t - other tuple
+	 * @return true if they have the same coordinates, false otherwise 
+	 */
+	public boolean equals(Point3D p) {
+		return ((this.x == p.x) && (this.y == p.y) && (this.z == p.z));
+	}
+	
+	/**
+	 * Returns a string representation of the tuple, in (x, y, z) format.
+	 */
+	public String toString() {
+		return "(" + this.x + ", " + this.y + ", " + this.z + ")";
+	}
+
+	/**
+	 * Returns new tuple instance with identical coordinates.
+	 */
+	@Override
+	public Point3D clone() {
+		return new Point3D(this);
 	}
 
 }
