@@ -5,30 +5,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import shapes.Surface;
+import lights.Light;
 import math.Point3D;
 import math.Ray;
 import math.Vec;
+
 /**
- * A Scene class containing all the scene objects including camera, lights and
- * surfaces. Some suggestions for code are in comment
- * If you uncomment these lines you'll need to implement some new types like Surface
+ * A Scene class containing all the scene objects including camera, lights and surfaces.
  * 
- * You can change all methods here this is only a suggestion! This is your world, 
- * add members methods as you wish
  */
 public class Scene implements IInitable {
 
-//TODO add members
-	//protected List<Surface> surfaces;
-	//protected List<Light> lights;
-	//protected Camera camera;
-
+	protected List<Surface> surfaces;
+	protected List<Light> lights;
+	protected Camera camera;
 
 	public Scene() {
 
-		//surfaces = new LinkedList<Surface>();
-		//lights = new LinkedList<Light>();
-		//camera = new Camera();
+		surfaces = new LinkedList<Surface>();
+		lights = new LinkedList<Light>();
+		camera = new Camera();
 	}
 
 	public void init(Map<String, String> attributes) {
@@ -86,8 +83,11 @@ public class Scene implements IInitable {
 
 	}
 
+	/**
+	 * Initialize the camera
+	 * @param attributes - user attributes for Camera
+	 */
 	public void setCameraAttributes(Map<String, String> attributes) {
-		//TODO uncomment after implementing camera interface if you like
-		//this.camera.init(attributes);
+		camera.init(attributes);
 	}
 }

@@ -27,23 +27,10 @@ public class Camera implements IInitable{
 	
 	/**
 	 * Constructor.
-	 * @param attributes - user attributes for camera
 	 */
-	public Camera(Map<String, String> attributes) {
+	public Camera() {
 		
-		// Initialize attributes from XML
-		init(attributes);
-		
-		// Make sure we have an orthogonal basis
-		right = Vec.crossProd(towards, up);
-		if (Vec.dotProd(towards, up) != 0) {
-			up = Vec.crossProd(towards, right);
-		}
-		
-		// Make sure we have an orthonormal basis
-		towards.normalize();
-		up.normalize();
-		right.normalize();
+		// Note: You can't use the camera before calling init() !!!
 		
 	}
 	
@@ -74,6 +61,11 @@ public class Camera implements IInitable{
 			throw new IllegalArgumentException("Missing 'up-direction' attribute");
 		}
 		up = new Vec(attributes.get("up-direction"));
+		
+		// Sanity check
+		if (Vec.linearlyDependent(towards, up)) {
+			throw new IllegalArgumentException("'towards' and 'up' vectors are linearly dependent!");
+		}
 	
 		// Initialize 'screen-dist' attribute
 		if (!attributes.containsKey("screen-dist")) {
@@ -88,6 +80,17 @@ public class Camera implements IInitable{
 		} else {
 			screenWidth = Double.parseDouble(attributes.get("screen-width"));
 		}
+		
+		// Make sure we have an orthogonal basis
+		right = Vec.crossProd(towards, up);
+		if (Vec.dotProd(towards, up) != 0) {
+			up = Vec.crossProd(towards, right);
+		}
+		
+		// Make sure we have an orthonormal basis
+		towards.normalize();
+		up.normalize();
+		right.normalize();
 		
 	}
 	
