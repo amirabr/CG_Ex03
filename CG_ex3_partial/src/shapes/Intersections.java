@@ -39,49 +39,13 @@ public class Intersections {
 	
 	public static Point3D rayDiscIntersection(Ray ray, Disc disc) {
 		
-		Vec discNormal = disc.getNormalAtPoint(null);
-		double rayDotDiscNormal = Vec.dotProd(ray.v, discNormal);
+		// Check if the ray intersects with the disc's plane
+		Point3D intersection = raySurfaceIntersection(ray, disc.getNormalAtPoint(null), disc.getCenter());
 		
-		Vec fromRaytoDisc = Point3D.vectorBetweenTwoPoints(ray.p, disc.getCenter());
-		double fromRaytoDiscDotDiscNormal = Vec.dotProd(fromRaytoDisc, discNormal);
-		
-		// First, check if the disc is facing the ray
-		if (Vec.dotProd(ray.v, discNormal) >= 0) {
-			
-			// The disc is facing away from the ray.
-			// We hit the back-face, ignore it
+		// If it doesn't hit the plane, it can't hit the disc
+		if (intersection == null) {
 			return null;
-			
 		}
-		
-		// If the ray's vector and disc's normal are orthogonal,
-		// then the ray and the disc's plane are parallel.
-		if (rayDotDiscNormal == 0) {
-		
-			// If the vector from the beginning of the ray to the
-			// center of the disc is also orthogonal to the disc's normal,
-			// they are in the same plane
-			if (fromRaytoDiscDotDiscNormal == 0) {
-			
-				// The ray and the disc are in the same plane,
-				// the problem is now 2D and can be solved using
-				// the ray-sphere intersection equation
-				return raySphereIntersection(ray, disc);
-				
-			} else {
-				
-				// The ray and the disc are in different parallel planes,
-				// there is no intersection.
-				return null;
-				
-			}
-			
-		}
-		
-		// If we got here, then the ray and the disc are not parallel.
-		// Find the intersection of the ray with the disc's plane
-		double d = fromRaytoDiscDotDiscNormal / rayDotDiscNormal;
-		Point3D intersection = Point3D.addVectorToPoint(ray.p, Vec.scale(d, ray.v));
 		
 		// Now we need to make sure the intersection happened inside the disc.
 		// Calculate the distance between the intersection point and the
@@ -97,7 +61,65 @@ public class Intersections {
 	}
 	
 	public static Point3D rayPolyIntersection(Ray ray, Poly poly) {
-		return null;
+		
+		// Check if the ray intersects with the disc's plane
+		Point3D intersection = raySurfaceIntersection(ray, poly.getNormalAtPoint(null), poly.getPoint(0));
+		
+		// If it doesn't hit the plane, it can't hit the poly
+		if (intersection == null) {
+			return null;
+		}
+		
+		// Now we need to make sure the intersection happened inside the poly.
+		// We connect the beginning of the ray with all the poly's points, thus
+		// creating a sort of pyramid with many sides. We calculate the normal
+		// of each side and check that its dot product with the ray is greater 
+		// than or equal to zero. If so, then the ray hits the inside of the poly.
+		for (int i=0; i<poly.getSize(); i++) {
+			
+			Vec v1 = Point3D.vectorBetweenTwoPoints(ray.p, poly.getPoint(i));
+			Vec v2 = Point3D.vectorBetweenTwoPoints(ray.p, poly.getPoint(i+1));
+			Vec sideNormal = Vec.crossProd(v1, v2);
+			sideNormal.normalize();
+			if (Vec.dotProd(ray.v, sideNormal) < 0) {
+				return null;
+			}
+			
+		}
+		
+		// All the conditions held, the intersection point is correct!
+		return intersection;
+	}
+	
+	private static Point3D raySurfaceIntersection(Ray ray, Vec surfaceNormal, Point3D pointOnSurface) {
+		
+		// First, check if the surface is facing the ray
+		if (Vec.dotProd(ray.v, surfaceNormal) >= 0) {
+			
+			// The surface is facing away from the ray.
+			// We hit the back-face, ignore it
+			return null;
+			
+		}
+		
+		double rayDotNormal = Vec.dotProd(ray.v, surfaceNormal);
+		
+		// If the ray's vector and surface normal are orthogonal,
+		// then the ray and the surface are parallel.
+		if (rayDotNormal == 0) {
+		
+			// We can't see the surface, ignore it
+			return null;
+			
+		}
+		
+		// If we got here, then the ray and the surface are not parallel.
+		// Find the intersection of the ray with the surface plane
+		Vec fromRaytoSurface = Point3D.vectorBetweenTwoPoints(ray.p, pointOnSurface);
+		double fromRaytoSurfaceDotSurfaceNormal = Vec.dotProd(fromRaytoSurface, surfaceNormal);
+		double d = fromRaytoSurfaceDotSurfaceNormal / rayDotNormal;
+		return Point3D.addVectorToPoint(ray.p, Vec.scale(d, ray.v));
+		
 	}
 
 }

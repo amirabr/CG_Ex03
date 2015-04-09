@@ -99,5 +99,22 @@ public class Poly extends Surface {
 	public Point3D intersectsWith(Ray ray) {
 		return null;
 	}
+	
+	/**
+	 * Getter for a specified point.
+	 * @param i - the point number
+	 * @return the point
+	 */
+	public Point3D getPoint(int i) {
+		return p[i];
+	}
+	
+	/**
+	 * Getter for size.
+	 * @return how many points the poly has
+	 */
+	public int getSize() {
+		return size;
+	}
 
 }
