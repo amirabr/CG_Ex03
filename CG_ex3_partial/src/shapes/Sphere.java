@@ -1,7 +1,9 @@
 package shapes;
 
 import java.util.Map;
+
 import math.Point3D;
+import math.Ray;
 import math.Vec;
 
 /**
@@ -60,6 +62,17 @@ public class Sphere extends Surface {
 		Vec normal = Point3D.vectorBetweenTwoPoints(center, p);
 		normal.normalize();
 		return normal;
+	}
+	
+	/**
+	 * Check ray-sphere intersection.
+	 * If there are 2 intersections, return the closet one.
+	 * @param ray - the ray
+	 * @return the point of intersection, or null otherwise
+	 */
+	@Override
+	public Point3D intersect(Ray ray) {
+		return null;
 	}
 
 }

@@ -2,7 +2,9 @@ package shapes;
 
 import java.util.Map;
 import java.util.TreeMap;
+
 import math.Point3D;
+import math.Ray;
 import math.Vec;
 
 /**
@@ -86,6 +88,16 @@ public class Poly extends Surface {
 		
 		// Return it
 		return normal;
+	}
+	
+	/**
+	 * Check ray-poly intersection.
+	 * @param ray - the ray
+	 * @return the point of intersection, or null otherwise
+	 */
+	@Override
+	public Point3D intersect(Ray ray) {
+		return null;
 	}
 
 }

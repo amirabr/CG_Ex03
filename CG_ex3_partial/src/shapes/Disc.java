@@ -1,7 +1,9 @@
 package shapes;
 
 import java.util.Map;
+
 import math.Point3D;
+import math.Ray;
 import math.Vec;
 
 /**
@@ -52,6 +54,16 @@ public class Disc extends Sphere {
 	@Override
 	public Vec getNormalAtPoint(Point3D p) {
 		return normal;
+	}
+	
+	/**
+	 * Check ray-disc intersection.
+	 * @param ray - the ray
+	 * @return the point of intersection, or null otherwise
+	 */
+	@Override
+	public Point3D intersect(Ray ray) {
+		return null;
 	}
 
 }

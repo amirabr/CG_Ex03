@@ -1,8 +1,10 @@
 package shapes;
 
 import java.util.Map;
+
 import math.Point3D;
 import math.RGB;
+import math.Ray;
 import math.Vec;
 import ex3.render.raytrace.IInitable;
 
@@ -81,5 +83,13 @@ public abstract class Surface implements IInitable {
 	 * @return the normal at that point
 	 */
 	public abstract Vec getNormalAtPoint(Point3D p);
+	
+	/**
+	 * Check ray-surface intersection.
+	 * If there are 2 intersections, return the closet one.
+	 * @param ray - the ray
+	 * @return the point of intersection, or null otherwise
+	 */
+	public abstract Point3D intersect(Ray ray);
 
 }
