@@ -3,7 +3,6 @@ package shapes;
 import java.util.Map;
 
 import math.Point3D;
-import math.RGB;
 import math.Ray;
 import math.Vec;
 import ex3.render.raytrace.IInitable;
@@ -14,10 +13,10 @@ import ex3.render.raytrace.IInitable;
  */
 public abstract class Surface implements IInitable {
 	
-	protected RGB mtlDiffuse; 		// Diffuse part of the flat material
-	protected RGB mtlSpecular; 		// Specular part of the material
-	protected RGB mtlAmbient; 		// Ambient part of the material
-	protected RGB mtlEmission; 		// Emission part of the material
+	protected Vec mtlDiffuse; 		// Diffuse part of the flat material
+	protected Vec mtlSpecular; 		// Specular part of the material
+	protected Vec mtlAmbient; 		// Ambient part of the material
+	protected Vec mtlEmission; 		// Emission part of the material
 	protected double mtlShininess; 	// Power of the (𝑉*𝑅) in the formula (𝑛)
 	protected double reflectance; 	// Reflectance coefficient of the material
 	
@@ -30,33 +29,33 @@ public abstract class Surface implements IInitable {
 		// Initialize 'mtl-diffuse' attribute
 		// Default is (0.7, 0.7, 0.7)
 		if (attributes.containsKey("mtl-diffuse")) {
-			mtlDiffuse = new RGB(attributes.get("mtl-diffuse"));
+			mtlDiffuse = new Vec(attributes.get("mtl-diffuse"));
 		} else {
-			mtlDiffuse = new RGB(0.7, 0.7, 0.7);
+			mtlDiffuse = new Vec(0.7, 0.7, 0.7);
 		}
 		
 		// Initialize 'mtl-specular' attribute
 		// Default is (1, 1, 1)
 		if (attributes.containsKey("mtl-specular")) {
-			mtlSpecular = new RGB(attributes.get("mtl-specular"));
+			mtlSpecular = new Vec(attributes.get("mtl-specular"));
 		} else {
-			mtlSpecular = new RGB(1, 1, 1);
+			mtlSpecular = new Vec(1, 1, 1);
 		}
 		
 		// Initialize 'mtl-ambient' attribute
 		// Default is (0.1, 0.1, 0.1)
 		if (attributes.containsKey("mtl-ambient")) {
-			mtlAmbient = new RGB(attributes.get("mtl-ambient"));
+			mtlAmbient = new Vec(attributes.get("mtl-ambient"));
 		} else {
-			mtlAmbient = new RGB(0.1, 0.1, 0.1);
+			mtlAmbient = new Vec(0.1, 0.1, 0.1);
 		}
 		
 		// Initialize 'mtl-emission' attribute
 		// Default is (0, 0, 0)
 		if (attributes.containsKey("mtl-emission")) {
-			mtlEmission = new RGB(attributes.get("mtl-emission"));
+			mtlEmission = new Vec(attributes.get("mtl-emission"));
 		} else {
-			mtlEmission = new RGB(0, 0, 0);
+			mtlEmission = new Vec(0, 0, 0);
 		}
 		
 		// Initialize 'mtl-shininess' attribute
@@ -91,5 +90,25 @@ public abstract class Surface implements IInitable {
 	 * @return the point of intersection, or null otherwise
 	 */
 	public abstract Point3D intersectsWith(Ray ray);
+	
+	public Vec getEmissionCoefficient() {
+		return mtlEmission;
+	}
+	
+	public Vec getAmbientCoefficient() {
+		return mtlAmbient;
+	}
+	
+	public Vec getDiffuseCoefficient() {
+		return mtlDiffuse;
+	}
+	
+	public Vec getSpecularCoefficient() {
+		return mtlSpecular;
+	}
+	
+	public double getShininessCoefficient() {
+		return mtlShininess;
+	}
 
 }

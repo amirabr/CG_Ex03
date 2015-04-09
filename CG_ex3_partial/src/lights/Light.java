@@ -1,7 +1,7 @@
 package lights;
 
 import math.Point3D;
-import math.RGB;
+import math.Vec;
 import ex3.render.raytrace.IInitable;
 
 /**
@@ -11,14 +11,14 @@ import ex3.render.raytrace.IInitable;
 public abstract class Light implements IInitable {
 
 	// Intensity of light
-	protected RGB color;
+	protected Vec color;
 	
 	/**
 	 * Calculate the intensity at a given point by this light source
 	 * @param p - the point
 	 * @return how much light gets to point p from this light source
 	 */
-	public abstract RGB getIntensityAtPoint(Point3D p);
+	public abstract Vec getIntensityAtPoint(Point3D p);
 	
 	public static boolean isLight(String type) {
 		type = type.toLowerCase();

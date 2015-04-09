@@ -3,7 +3,6 @@ package lights;
 import java.util.Map;
 import java.util.Scanner;
 import math.Point3D;
-import math.RGB;
 import math.Vec;
 
 /**
@@ -44,9 +43,9 @@ public class SpotLight extends Light {
 		// Initialize 'color' attribute
 		// Default is (1, 1, 1)
 		if (attributes.containsKey("color")) {
-			color = new RGB(attributes.get("color"));
+			color = new Vec(attributes.get("color"));
 		} else {
-			color = new RGB(1, 1, 1);
+			color = new Vec(1, 1, 1);
 		}
 		
 		// Initialize 'position' attribute
@@ -82,7 +81,7 @@ public class SpotLight extends Light {
 	 * Calculate the intensity at the given point.
 	 * @param p - the point
 	 */
-	public RGB getIntensityAtPoint(Point3D p) {
+	public Vec getIntensityAtPoint(Point3D p) {
 		
 		// Calculate the distance between the light source and the object
 		double d = Point3D.distance(p, position);
@@ -94,8 +93,12 @@ public class SpotLight extends Light {
 		double weakening = Vec.dotProd(direction, L) / (kConst + kLinear*d + kQuadratic*d*d);
 		
 		// Return the result
-		return RGB.scale(weakening, color);
+		return Vec.scale(weakening, color);
 	
+	}
+	
+	public Point3D getPosition() {
+		return position;
 	}
 	
 }

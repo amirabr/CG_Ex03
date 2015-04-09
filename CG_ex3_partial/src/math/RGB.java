@@ -89,6 +89,12 @@ public class RGB extends Tuple {
 		return blue() * 255;
 	}
 	
+	public void add(RGB color) {
+		this.x += color.x;
+		this.y += color.y;
+		this.z += color.z;
+	}
+	
 	/**
 	 * Scale the RGB vector by a scalar s.
 	 * @param s - the scalar

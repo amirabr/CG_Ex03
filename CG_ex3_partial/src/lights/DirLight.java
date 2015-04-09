@@ -2,7 +2,6 @@ package lights;
 
 import java.util.Map;
 import math.Point3D;
-import math.RGB;
 import math.Vec;
 
 /**
@@ -35,9 +34,9 @@ public class DirLight extends Light {
 		// Initialize 'color' attribute
 		// Default is (1, 1, 1)
 		if (attributes.containsKey("color")) {
-			color = new RGB(attributes.get("color"));
+			color = new Vec(attributes.get("color"));
 		} else {
-			color = new RGB(1, 1, 1);
+			color = new Vec(1, 1, 1);
 		}
 		
 		// Initialize 'direction' attribute
@@ -52,8 +51,12 @@ public class DirLight extends Light {
 	 * Calculate the intensity at the given point.
 	 * Note: in this case, there is no point
 	 */
-	public RGB getIntensityAtPoint(Point3D p) {
+	public Vec getIntensityAtPoint(Point3D p) {
 		return color;
+	}
+	
+	public Vec getDirection() {
+		return direction;
 	}
 	
 }
