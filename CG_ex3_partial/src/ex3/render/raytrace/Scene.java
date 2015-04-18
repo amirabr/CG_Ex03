@@ -130,7 +130,7 @@ public class Scene implements IInitable {
 		}
 		
 		// Else, return the intersection
-		return new Intersection(minObject, minPoint);
+		return new Intersection(minObject, minPoint, minDistance);
 	}
 
 	/**
@@ -167,6 +167,18 @@ public class Scene implements IInitable {
 		// Iterate over all the lights in the scene
 		for (Light light : lights) {
 
+			// Check shadow
+			Vec fromIntersectionToLightSource = Point3D.vectorBetweenTwoPoints(intersection.point, light.getPosition());
+			Ray shadowRay = new Ray(intersection.point, fromIntersectionToLightSource);
+			Intersection lightIntersection = findIntersection(shadowRay);
+			if (lightIntersection != null) {
+				double distanceToLightSource = Point3D.distance(intersection.point, light.getPosition());
+				double distanceToObject = intersection.distance;
+				if (distanceToObject > Intersection.TOLERANCE && distanceToLightSource > distanceToObject + Intersection.TOLERANCE) {
+					continue;
+				}
+			}
+			
 			// Add diffuse factor
 			color.add(calcDiffuseColor(intersection, light));
 			

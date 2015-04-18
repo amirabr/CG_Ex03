@@ -68,7 +68,7 @@ public class RayTracer implements IRenderer {
 		for (int i=0; i<canvasWidth; i++) {
 			
 			if (i==480/2 && line==360/2) {
-			//if (i==480/2+25 && line==360/2+50) {
+			//if (i==180 && line==60) {
 				System.out.println("stop here");
 				//canvas.setRGB(i, line, new Color(255, 0, 0).getRGB());
 				//continue;

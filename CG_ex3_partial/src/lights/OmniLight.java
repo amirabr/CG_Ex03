@@ -91,7 +91,7 @@ public class OmniLight extends Light {
 		
 		Vec IL = Vec.scale(weakening, color);
 		
-		if (IL.x > 1) {
+		/*if (IL.x > 1) {
 			IL.x = 1;
 		}
 		if (IL.y > 1) {
@@ -99,7 +99,7 @@ public class OmniLight extends Light {
 		}
 		if (IL.z > 1) {
 			IL.z = 1;
-		}
+		}*/
 		
 		return IL;
 		

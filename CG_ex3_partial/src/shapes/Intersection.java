@@ -6,24 +6,27 @@ import math.Vec;
 
 public class Intersection {
 	
+	public static final double TOLERANCE = 1.0E-4D;
+	
 	public Surface object;
 	public Point3D point;
+	public double distance;
 	
 	public Intersection() {
 		
 	}
 	
-	public Intersection(Surface object, Point3D point) {
+	public Intersection(Surface object, Point3D point, double distance) {
 		this.object = object;
 		this.point = point;
+		this.distance = distance;
 	}
 	
 	public static Point3D raySphereIntersection(Ray ray, Sphere sphere) {
 		
 		Vec fromOtoP0 = Point3D.vectorBetweenTwoPoints(sphere.getCenter(), ray.p);
 		double a = 1;
-	    double b = 2 * Vec.dotProd(ray.v, fromOtoP0); 
-	    //double c = fromOtoP0.lengthSquared() - sphere.getRadius();
+	    double b = 2 * Vec.dotProd(ray.v, fromOtoP0);
 	    double c = fromOtoP0.lengthSquared() - Math.pow(sphere.getRadius(), 2);
 	    double discriminant = (b * b - 4 * a * c);
 	    double d = Math.sqrt(discriminant);

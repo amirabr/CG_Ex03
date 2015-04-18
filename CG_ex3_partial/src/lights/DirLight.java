@@ -63,4 +63,8 @@ public class DirLight extends Light {
 		return direction;
 	}
 	
+	public Point3D getPosition() {
+		return null;
+	}
+	
 }
