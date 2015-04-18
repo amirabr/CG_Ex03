@@ -125,6 +125,7 @@ public class Camera implements IInitable{
 		// Find the desired pixel in the view plane
 		goUp 	= Vec.scale(y - centerPixel2D.y, Vec.scale(pixelRatio, up));
 		goRight = Vec.scale(x - centerPixel2D.x, Vec.scale(pixelRatio, right));
+		goUp.negate(); // Up direction is upside-down
 		desiredPixel3D = Point3D.addVectorToPoint(Point3D.addVectorToPoint(centerPixel3D, goRight), goUp);  
 		desiredVector = Point3D.vectorBetweenTwoPoints(eye, desiredPixel3D);
 		

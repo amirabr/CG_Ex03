@@ -274,7 +274,8 @@ public class Scene implements IInitable {
 		Vec N = object.getNormalAtPoint(point);
 		
 		// Find the vector between the intersection point
-		// and the light source, and IL at that point
+		// and the light source, and normalize
+		// Also find IL at that point
 		Vec L = null;
 		Vec IL = null;
 		if (light instanceof DirLight) {
@@ -322,7 +323,8 @@ public class Scene implements IInitable {
 		Vec N = object.getNormalAtPoint(point);
 		
 		// Find the vector between the intersection point
-		// and the light source, and IL at that point
+		// and the light source, and normalize
+		// Also find IL at that point
 		Vec L = null;
 		Vec IL = null;
 		if (light instanceof DirLight) {
@@ -339,31 +341,21 @@ public class Scene implements IInitable {
 			L = Point3D.vectorBetweenTwoPoints(point, sLight.getPosition());
 			IL = sLight.getIntensityAtPoint(point);
 		}
-		//L.normalize();
+		L.normalize();
 		
-		////////
-		////////
-		// TODO
-		// CHECK REFLECTION WORKS!!!!!
-		////////
-		///////
-		//////
-		
-		
-		// Reflect L in relation to N
+		// Reflect L in relation to N, and normalize
 		Vec R = L.reflect(N);
 		R.normalize();
 		
-		// Find the vector from the intersection point to the eye
-		Vec V = Point3D.vectorBetweenTwoPoints(point, camera.getEye());
+		// Find the vector from the eye to the intersection point, and normalize
+		Vec V = Point3D.vectorBetweenTwoPoints(camera.getEye(), point);
 		V.normalize();
 		
 		// Calculate the dot product between them
 		// Note: cosine is negative if angle>90, hence the max()
-		//double dotProduct = Math.max(0, Vec.dotProd(N, R));
 		double dotProduct = Math.max(0, Vec.dotProd(V, R));
 		
-		// Raise it to the power of n
+		// Raise it to the power of n (shininess)
 		double dotProductN = Math.pow(dotProduct, object.getShininessCoefficient());
 		
 		// Get the surface's specular coefficient

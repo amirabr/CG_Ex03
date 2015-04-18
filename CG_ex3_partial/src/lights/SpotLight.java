@@ -60,6 +60,7 @@ public class SpotLight extends Light {
 			throw new IllegalArgumentException("Missing 'dir' attribute");
 		}
 		direction = new Vec(attributes.get("dir"));
+		direction.normalize();
 
 		// Initialize 'kc' attribute
 		// Default is 1
@@ -93,14 +94,19 @@ public class SpotLight extends Light {
 	 */
 	public Vec getIntensityAtPoint(Point3D p) {
 		
+		// Calculate the vector between the light source and the object, and normalize it
+		Vec L = Point3D.vectorBetweenTwoPoints(position, p);
+		L.normalize();
+		
 		// Calculate the distance between the light source and the object
 		double d = Point3D.distance(p, position);
 		
-		// Calculate the vector between the light source and the object
-		Vec L = Point3D.vectorBetweenTwoPoints(position, p);
+		// Count for the angle between the direction of light and position of object
+		// Note: cosine is negative if angle>90, hence the max()
+		double dotProduct = Math.max(0, Vec.dotProd(direction, L));
 		
 		// Calculate distance and angle weakening factor 
-		double weakening = Vec.dotProd(direction, L) / (kConst + kLinear*d + kQuadratic*d*d);
+		double weakening = dotProduct / (kConst + kLinear*d + kQuadratic*d*d);
 		
 		// Return the result
 		return Vec.scale(weakening, color);

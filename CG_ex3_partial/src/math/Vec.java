@@ -69,14 +69,10 @@ public class Vec {
 	 * @return The reflected vector
 	 */
 	public Vec reflect(Vec normal) {
-		/*Vec nor = normal.clone();
+		Vec nor = normal.clone();
 		nor.scale(nor.dotProd(this) * (-2));
 		nor.add(this);
-		return nor;*/
-		double g = normal.dotProd(this);
-		Vec r = clone();
-		r.add(scale(-2.0 * g, normal));
-		return r;
+		return nor;
 	}
 
 	/**
