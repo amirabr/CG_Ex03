@@ -280,19 +280,21 @@ public class Scene implements IInitable {
 		Vec IL = null;
 		if (light instanceof DirLight) {
 			DirLight dLight = (DirLight)light; 
-			L = dLight.getDirection();
-			L.negate();
+			//L = dLight.getDirection();
+			//L.negate();
+			L = Vec.negate(dLight.getDirection());
 			IL = dLight.getIntensityAtPoint(point);
 		} else if (light instanceof OmniLight) {
 			OmniLight oLight = (OmniLight)light;
 			L = Point3D.vectorBetweenTwoPoints(point, oLight.getPosition());
+			L.normalize();
 			IL = oLight.getIntensityAtPoint(point);
 		} else {
 			SpotLight sLight = (SpotLight)light;
 			L = Point3D.vectorBetweenTwoPoints(point, sLight.getPosition());
+			L.normalize();
 			IL = sLight.getIntensityAtPoint(point);
 		}
-		L.normalize();
 		
 		// Calculate the dot product between them
 		// Note: cosine is negative if angle>90, hence the max()
@@ -329,19 +331,21 @@ public class Scene implements IInitable {
 		Vec IL = null;
 		if (light instanceof DirLight) {
 			DirLight dLight = (DirLight)light; 
-			L = dLight.getDirection();
-			L.negate();
+			//L = dLight.getDirection();
+			//L.negate();
+			L = Vec.negate(dLight.getDirection());
 			IL = dLight.getIntensityAtPoint(point);
 		} else if (light instanceof OmniLight) {
 			OmniLight oLight = (OmniLight)light;
 			L = Point3D.vectorBetweenTwoPoints(point, oLight.getPosition());
+			L.normalize();
 			IL = oLight.getIntensityAtPoint(point);
 		} else {
 			SpotLight sLight = (SpotLight)light;
 			L = Point3D.vectorBetweenTwoPoints(point, sLight.getPosition());
+			L.normalize();
 			IL = sLight.getIntensityAtPoint(point);
 		}
-		L.normalize();
 		
 		// Reflect L in relation to N, and normalize
 		Vec R = L.reflect(N);

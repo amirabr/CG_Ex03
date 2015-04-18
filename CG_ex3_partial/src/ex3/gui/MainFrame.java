@@ -53,7 +53,7 @@ public class MainFrame extends JFrame {
 
 		// Path is relative
 		//currentDir = new File(".");
-		currentDir = new File("./scenes/1_primitives");
+		currentDir = new File("./scenes/3_light");
 
 		// sets things to look as I wanted it to look
 		setNativeLookAndFeel();
