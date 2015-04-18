@@ -87,7 +87,7 @@ public class Scene implements IInitable {
 	 * @param ray - the ray
 	 * @return intersecting point and object
 	 */
-	public Intersection findIntersection(Ray ray) {
+	public Intersection findIntersection(Ray ray, boolean showInside) {
 		
 		double minDistance = Double.MAX_VALUE;
 		Surface minObject = null;
@@ -101,7 +101,7 @@ public class Scene implements IInitable {
 			if (obj instanceof Disc) {
 				p = Intersection.rayDiscIntersection(ray, (Disc)obj);
 			} else if (obj instanceof Sphere) {
-				p = Intersection.raySphereIntersection(ray, (Sphere)obj);
+				p = Intersection.raySphereIntersection(ray, (Sphere)obj, showInside);
 			} else {
 				p = Intersection.rayPolyIntersection(ray, (Poly)obj);
 			}
@@ -116,7 +116,7 @@ public class Scene implements IInitable {
 			double dist = Point3D.distance(ray.p, p);
 			
 			// If its closer than the current minimum, save it
-			if (dist < minDistance) {
+			if ((dist < minDistance) && (dist > Intersection.TOLERANCE)) {
 				minDistance = dist;
 				minObject = obj;
 				minPoint = p;
@@ -147,7 +147,7 @@ public class Scene implements IInitable {
 	public Vec calcColor(Ray ray, int level) {
 		
 		// Find the intersection of the ray with the closest object in the scene
-		Intersection intersection = findIntersection(ray);
+		Intersection intersection = findIntersection(ray, false);
 		
 		// No intersection, return bgTexture or bgColor
 		if (intersection == null) {
@@ -170,7 +170,7 @@ public class Scene implements IInitable {
 			// Check shadow
 			Vec fromIntersectionToLightSource = Point3D.vectorBetweenTwoPoints(intersection.point, light.getPosition());
 			Ray shadowRay = new Ray(intersection.point, fromIntersectionToLightSource);
-			Intersection lightIntersection = findIntersection(shadowRay);
+			Intersection lightIntersection = findIntersection(shadowRay, true);
 			if (lightIntersection != null) {
 				double distanceToLightSource = Point3D.distance(intersection.point, light.getPosition());
 				double distanceToObject = intersection.distance;
