@@ -46,24 +46,33 @@ public class OmniLight extends Light {
 		}
 		
 		// Initialize 'position' attribute
-		if (!attributes.containsKey("position")) {
-			throw new IllegalArgumentException("Missing 'position' attribute");
+		if (!attributes.containsKey("pos")) {
+			throw new IllegalArgumentException("Missing 'pos' attribute");
 		}
-		position = new Point3D(attributes.get("position"));
+		position = new Point3D(attributes.get("pos"));
 		
-		// Initialize 'attenuation' attribute
-		// Default is (1, 0, 0)
-		if (attributes.containsKey("attenuation")) {
-			String attenuation = attributes.get("attenuation");
-			Scanner s = new Scanner(attenuation);
-			kConst 		= s.nextDouble();
-			kLinear 	= s.nextDouble();
-			kQuadratic 	= s.nextDouble();
-			s.close();
+		// Initialize 'kc' attribute
+		// Default is 1
+		if (attributes.containsKey("kc")) {
+			kConst = Double.parseDouble(attributes.get("kc"));
 		} else {
-			kConst 		= 1;
-			kLinear 	= 0;
-			kQuadratic 	= 0;
+			kConst = 1;
+		}
+		
+		// Initialize 'kl' attribute
+		// Default is 0
+		if (attributes.containsKey("kl")) {
+			kLinear = Double.parseDouble(attributes.get("kl"));
+		} else {
+			kLinear = 0;
+		}
+		
+		// Initialize 'kq' attribute
+		// Default is 0
+		if (attributes.containsKey("kq")) {
+			kQuadratic = Double.parseDouble(attributes.get("kq"));
+		} else {
+			kQuadratic = 0;
 		}
 		
 	}
@@ -80,8 +89,22 @@ public class OmniLight extends Light {
 		// Calculate distance weakening factor 
 		double weakening =  1 / (kConst + kLinear*d + kQuadratic*d*d);
 		
+		Vec IL = Vec.scale(weakening, color);
+		
+		if (IL.x > 1) {
+			IL.x = 1;
+		}
+		if (IL.y > 1) {
+			IL.y = 1;
+		}
+		if (IL.z > 1) {
+			IL.z = 1;
+		}
+		
+		return IL;
+		
 		// Return the result
-		return Vec.scale(weakening, color);
+		//return Vec.scale(weakening, color);
 	
 	}
 	

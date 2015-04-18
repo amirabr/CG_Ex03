@@ -65,19 +65,24 @@ public class RayTracer implements IRenderer {
 	@Override
 	public void renderLine(BufferedImage canvas, int line) {
 		
-		
 		for (int i=0; i<canvasWidth; i++) {
 			
+			if (i==480/2 && line==360/2) {
+			//if (i==480/2-80 && line==360/2) {
+				System.out.println("stop here");
+				//canvas.setRGB(i, line, new Color(255, 0, 0).getRGB());
+				//continue;
+			}
 			
 			Ray ray = scene.castRay(i, line, canvasWidth, canvasHeight);
 			Vec color = scene.calcColor(ray, 0);
+			try {
 			Color realColor = new Color((int)(color.x*255), (int)(color.y*255), (int)(color.z*255));
 			canvas.setRGB(i, line, realColor.getRGB());
-			//System.out.println("readColor=("+realColor.getRed()+", "+realColor.getGreen()+", "+realColor.getBlue());
-			/*
-			Color blue = new Color(0, 0, 255);
-			canvas.setRGB(i, line, blue.getRGB());
-			*/
+			} catch (IllegalArgumentException ex) {
+				System.out.println("color overflow");
+			}
+			
 		}
 		
 	}

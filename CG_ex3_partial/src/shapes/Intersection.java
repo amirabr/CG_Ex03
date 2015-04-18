@@ -23,7 +23,8 @@ public class Intersection {
 		Vec fromOtoP0 = Point3D.vectorBetweenTwoPoints(sphere.getCenter(), ray.p);
 		double a = 1;
 	    double b = 2 * Vec.dotProd(ray.v, fromOtoP0); 
-	    double c = fromOtoP0.lengthSquared() - sphere.getRadius();
+	    //double c = fromOtoP0.lengthSquared() - sphere.getRadius();
+	    double c = fromOtoP0.lengthSquared() - Math.pow(sphere.getRadius(), 2);
 	    double discriminant = (b * b - 4 * a * c);
 	    double d = Math.sqrt(discriminant);
 	    
@@ -90,8 +91,8 @@ public class Intersection {
 		for (int i=0; i<poly.getSize(); i++) {
 			
 			Vec v1 = Point3D.vectorBetweenTwoPoints(ray.p, poly.getPoint(i));
-			Vec v2 = Point3D.vectorBetweenTwoPoints(ray.p, poly.getPoint(i+1));
-			Vec sideNormal = Vec.crossProd(v1, v2);
+			Vec v2 = Point3D.vectorBetweenTwoPoints(ray.p, poly.getPoint((i+1)%poly.getSize()));
+			Vec sideNormal = Vec.crossProd(v2, v1);
 			sideNormal.normalize();
 			if (Vec.dotProd(ray.v, sideNormal) < 0) {
 				return null;

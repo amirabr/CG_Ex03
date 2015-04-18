@@ -17,4 +17,8 @@ public class Ray {
 		v.normalize();
 	}
 	
+	public String toString() {
+		return "p = " + p.toString() + "\nv = " + v.toString();
+	}
+	
 }

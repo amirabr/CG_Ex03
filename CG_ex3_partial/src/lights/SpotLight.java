@@ -2,6 +2,7 @@ package lights;
 
 import java.util.Map;
 import java.util.Scanner;
+
 import math.Point3D;
 import math.Vec;
 
@@ -48,31 +49,40 @@ public class SpotLight extends Light {
 			color = new Vec(1, 1, 1);
 		}
 		
-		// Initialize 'position' attribute
-		if (!attributes.containsKey("position")) {
-			throw new IllegalArgumentException("Missing 'position' attribute");
+		// Initialize 'pos' attribute
+		if (!attributes.containsKey("pos")) {
+			throw new IllegalArgumentException("Missing 'pos' attribute");
 		}
-		position = new Point3D(attributes.get("position"));
+		position = new Point3D(attributes.get("pos"));
 		
-		// Initialize 'direction' attribute
-		if (!attributes.containsKey("direction")) {
-			throw new IllegalArgumentException("Missing 'direction' attribute");
+		// Initialize 'dir' attribute
+		if (!attributes.containsKey("dir")) {
+			throw new IllegalArgumentException("Missing 'dir' attribute");
 		}
-		direction = new Vec(attributes.get("direction"));
-		
-		// Initialize 'attenuation' attribute
-		// Default is (1, 0, 0)
-		if (attributes.containsKey("attenuation")) {
-			String attenuation = attributes.get("attenuation");
-			Scanner s = new Scanner(attenuation);
-			kConst 		= s.nextDouble();
-			kLinear 	= s.nextDouble();
-			kQuadratic 	= s.nextDouble();
-			s.close();
+		direction = new Vec(attributes.get("dir"));
+
+		// Initialize 'kc' attribute
+		// Default is 1
+		if (attributes.containsKey("kc")) {
+			kConst = Double.parseDouble(attributes.get("kc"));
 		} else {
-			kConst 		= 1;
-			kLinear 	= 0;
-			kQuadratic 	= 0;
+			kConst = 1;
+		}
+		
+		// Initialize 'kl' attribute
+		// Default is 0
+		if (attributes.containsKey("kl")) {
+			kLinear = Double.parseDouble(attributes.get("kl"));
+		} else {
+			kLinear = 0;
+		}
+		
+		// Initialize 'kq' attribute
+		// Default is 0
+		if (attributes.containsKey("kq")) {
+			kQuadratic = Double.parseDouble(attributes.get("kq"));
+		} else {
+			kQuadratic = 0;
 		}
 		
 	}

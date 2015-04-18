@@ -1,5 +1,6 @@
 package shapes;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -54,19 +55,30 @@ public class Poly extends Surface {
 	@Override
 	public void init(Map<String, String> attributes) throws IllegalArgumentException {
 	
-		// First we sort the attributes, to make sure the points are in sorted order
-		Map<String, String> treeMap = new TreeMap<String, String>(attributes);
+		Map<String, String> justThePoints = new HashMap<String, String>(); 
 		
-		// Now for each point entry, parse it into our p array
-		for (Map.Entry<String, String> entry : treeMap.entrySet()) {
-			if (entry.getValue().startsWith("p")) {
-				p[size++] = new Point3D(entry.getValue());
+		// Filter out just the points from the attributes, and count them
+		for (Map.Entry<String, String> entry : attributes.entrySet()) {
+			if (entry.getKey().startsWith("p")) {
+				justThePoints.put(entry.getKey(), entry.getValue());
+				size++;
 			}
 		}
 		
 		// Sanity check
 		if (size < 3) {
 			throw new IllegalArgumentException("Invalid Poly");
+		}
+		
+		// Make sure the points are in sorted order
+		Map<String, String> justThePointsSorted = new TreeMap<String, String>(justThePoints);
+		
+		// Initialize the points array
+		p = new Point3D[size];
+		
+		// Populate the points array
+		for (int i=0; i<size; i++) {
+			p[i] = new Point3D(justThePointsSorted.get("p" + i));
 		}
 		
 	}
@@ -113,6 +125,9 @@ public class Poly extends Surface {
 	 * @return the point
 	 */
 	public Point3D getPoint(int i) {
+		if ((i < 0) || (i >= size)) {
+			return null;
+		}
 		return p[i];
 	}
 	

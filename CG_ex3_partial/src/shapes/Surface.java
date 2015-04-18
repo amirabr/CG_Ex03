@@ -69,9 +69,9 @@ public abstract class Surface implements IInitable {
 		// Initialize 'reflectance' attribute
 		// Default is 0
 		if (attributes.containsKey("reflectance")) {
-			mtlShininess = Double.parseDouble(attributes.get("reflectance"));
+			reflectance = Double.parseDouble(attributes.get("reflectance"));
 		} else {
-			mtlShininess = 0;
+			reflectance = 0;
 		}
 		
 	}

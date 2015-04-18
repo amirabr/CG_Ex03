@@ -119,7 +119,7 @@ public class Camera implements IInitable{
 		// Find the center pixel of the view plane
 		pixelRatio = screenWidth / width;
 		screenHeight = height * pixelRatio;
-		centerPixel2D = new Point3D(Math.floor(screenWidth/2), Math.floor(screenHeight/2), 0);
+		centerPixel2D = new Point3D(Math.floor(width/2), Math.floor(height/2), 0);
 		centerPixel3D = Point3D.addVectorToPoint(eye, Vec.scale(screenDist, towards));
 		
 		// Find the desired pixel in the view plane
@@ -131,6 +131,10 @@ public class Camera implements IInitable{
 		// Cast a ray through it
 		return new Ray(eye, desiredVector);
 		
+	}
+	
+	public Point3D getEye() {
+		return eye;
 	}
 
 }

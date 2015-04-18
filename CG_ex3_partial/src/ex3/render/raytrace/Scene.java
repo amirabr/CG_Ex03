@@ -175,6 +175,17 @@ public class Scene implements IInitable {
 			
 		}
 		
+		// Make sure we don't overflow on color
+		if (color.x > 1) {
+			color.x = 1;
+		}
+		if (color.y > 1) {
+			color.y = 1;
+		}
+		if (color.z > 1) {
+			color.z = 1;
+		}
+		
 		return color;
 	}
 
@@ -283,7 +294,8 @@ public class Scene implements IInitable {
 		L.normalize();
 		
 		// Calculate the dot product between them
-		double dotProduct = Vec.dotProd(N, L);
+		// Note: cosine is negative if angle>90, hence the max()
+		double dotProduct = Math.max(0, Vec.dotProd(N, L));
 		
 		// Get the surface's diffuse coefficient
 		Vec KD = object.getDiffuseCoefficient();
@@ -327,13 +339,29 @@ public class Scene implements IInitable {
 			L = Point3D.vectorBetweenTwoPoints(point, sLight.getPosition());
 			IL = sLight.getIntensityAtPoint(point);
 		}
-		L.normalize();
+		//L.normalize();
+		
+		////////
+		////////
+		// TODO
+		// CHECK REFLECTION WORKS!!!!!
+		////////
+		///////
+		//////
+		
 		
 		// Reflect L in relation to N
 		Vec R = L.reflect(N);
+		R.normalize();
+		
+		// Find the vector from the intersection point to the eye
+		Vec V = Point3D.vectorBetweenTwoPoints(point, camera.getEye());
+		V.normalize();
 		
 		// Calculate the dot product between them
-		double dotProduct = Vec.dotProd(N, R);
+		// Note: cosine is negative if angle>90, hence the max()
+		//double dotProduct = Math.max(0, Vec.dotProd(N, R));
+		double dotProduct = Math.max(0, Vec.dotProd(V, R));
 		
 		// Raise it to the power of n
 		double dotProductN = Math.pow(dotProduct, object.getShininessCoefficient());
