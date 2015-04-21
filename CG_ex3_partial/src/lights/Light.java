@@ -14,16 +14,41 @@ public abstract class Light implements IInitable {
 	protected Vec color;
 	
 	/**
-	 * Calculate the intensity at a given point by this light source
-	 * @param p - the point
-	 * @return how much light gets to point p from this light source
+	 * Calculate the intensity at the given point.
+	 * 
+	 * @param p - point to measure intensity at
+	 * @return the color intensity at that point
 	 */
 	public abstract Vec getIntensityAtPoint(Point3D p);
 	
+	/**
+	 * Getter for position.
+	 * 
+	 * @return position
+	 */
 	public abstract Point3D getPosition();
 	
+	/**
+	 * Getter for direction.
+	 * 
+	 * @return direction
+	 */
+	public abstract Vec getDirection();
+	
+	/**
+	 * Calculates the vector from pos to the light's position.
+	 * 
+	 * @param pos - position to measure from
+	 * @return the vector from pos to this.position
+	 */
 	public abstract Vec vectorToMe(Point3D pos);
 	
+	/**
+	 * Calculates the distance from pos the the light's position.
+	 * 
+	 * @param pos - position to measure from
+	 * @return the distance from pos to this.position
+	 */
 	public abstract double distanceToMe(Point3D pos);
 	
 	/**

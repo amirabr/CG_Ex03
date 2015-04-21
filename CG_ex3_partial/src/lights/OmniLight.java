@@ -1,7 +1,6 @@
 package lights;
 
 import java.util.Map;
-import java.util.Scanner;
 import math.Point3D;
 import math.Vec;
 
@@ -22,6 +21,7 @@ public class OmniLight extends Light {
 	
 	/**
 	 * Constructor.
+	 * 
 	 * @param attributes - user attributes for OmniLight
 	 */
 	public OmniLight(Map<String, String> attributes) {
@@ -33,6 +33,7 @@ public class OmniLight extends Light {
 	
 	/**
 	 * Initialize attributes from XML.
+	 * 
 	 * @param attributes - user attributes for OmniLight
 	 */
 	public void init(Map<String, String> attributes) throws IllegalArgumentException {
@@ -79,7 +80,9 @@ public class OmniLight extends Light {
 	
 	/**
 	 * Calculate the intensity at the given point.
-	 * @param p - the point
+	 * 
+	 * @param p - point to measure intensity at
+	 * @return the color intensity at that point
 	 */
 	public Vec getIntensityAtPoint(Point3D p) {
 		
@@ -89,37 +92,45 @@ public class OmniLight extends Light {
 		// Calculate distance weakening factor 
 		double weakening =  1 / (kConst + kLinear*d + kQuadratic*d*d);
 		
-		Vec IL = Vec.scale(weakening, color);
-		
-		/*if (IL.x > 1) {
-			IL.x = 1;
-		}
-		if (IL.y > 1) {
-			IL.y = 1;
-		}
-		if (IL.z > 1) {
-			IL.z = 1;
-		}*/
-		
-		return IL;
-		
 		// Return the result
-		//return Vec.scale(weakening, color);
+		return Vec.scale(weakening, color);
 	
 	}
 	
 	/**
-	 * Getter for position
+	 * Getter for position.
+	 * 
 	 * @return position
 	 */
 	public Point3D getPosition() {
 		return position;
 	}
 	
+	/**
+	 * Getter for direction.
+	 * 
+	 * @return direction
+	 */
+	public Vec getDirection() {
+		return null;
+	}
+	
+	/**
+	 * Calculates the vector from pos to the light's position.
+	 * 
+	 * @param pos - position to measure from
+	 * @return the vector from pos to this.position
+	 */
 	public Vec vectorToMe(Point3D pos) {
 		return Point3D.vectorBetweenTwoPoints(pos, position);
 	}
 	
+	/**
+	 * Calculates the distance from pos the the light's position.
+	 * 
+	 * @param pos - position to measure from
+	 * @return the distance from pos to this.position
+	 */
 	public double distanceToMe(Point3D pos) {
 		return Point3D.distance(pos, position);
 	}

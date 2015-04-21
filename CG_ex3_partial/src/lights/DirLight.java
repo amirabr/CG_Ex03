@@ -16,6 +16,7 @@ public class DirLight extends Light {
 	
 	/**
 	 * Constructor.
+	 * 
 	 * @param attributes - user attributes for DirLight
 	 */
 	public DirLight(Map<String, String> attributes) {
@@ -27,6 +28,7 @@ public class DirLight extends Light {
 	
 	/**
 	 * Initialize attributes from XML.
+	 * 
 	 * @param attributes - user attributes for DirLight
 	 */
 	public void init(Map<String, String> attributes) throws IllegalArgumentException {
@@ -49,28 +51,53 @@ public class DirLight extends Light {
 	
 	/**
 	 * Calculate the intensity at the given point.
-	 * Note: in this case, there is no point
+	 * In this case, the amount of light is the same at every point,
+	 * so no calculation is needed.
+	 * 
+	 * @param p - point to measure intensity at
+	 * @return the color intensity at that point
 	 */
 	public Vec getIntensityAtPoint(Point3D p) {
 		return color;
 	}
 	
 	/**
-	 * Getter for direction
+	 * Getter for position.
+	 * 
+	 * @return null
+	 */
+	public Point3D getPosition() {
+		return null;
+	}
+	
+	/**
+	 * Getter for direction.
+	 * 
 	 * @return direction
 	 */
 	public Vec getDirection() {
 		return direction;
 	}
 	
-	public Point3D getPosition() {
-		return null;
-	}
-	
+	/**
+	 * Calculates the vector from pos to the light's position.
+	 * In this case, there is no position, so just flip the
+	 * direction vector of the light source.
+	 * 
+	 * @param pos - position to measure from
+	 * @return the vector from pos to this.position
+	 */
 	public Vec vectorToMe(Point3D pos) {
 		return Vec.negate(direction);
 	}
 	
+	/**
+	 * Calculates the distance from pos the the light's position.
+	 * In this case, there is no position, so just return infinity.
+	 * 
+	 * @param pos - position to measure from
+	 * @return infinity
+	 */
 	public double distanceToMe(Point3D pos) {
 		return Double.POSITIVE_INFINITY;
 	}

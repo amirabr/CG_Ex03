@@ -3,7 +3,6 @@ package ex3.render.raytrace;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 import shapes.Disc;
 import shapes.Intersection;
@@ -44,6 +43,10 @@ public class Scene implements IInitable {
 		
 	}
 
+	/**
+	 * Initialize attributes from XML.
+	 * @param attributes - user attributes for Scene
+	 */
 	public void init(Map<String, String> attributes) {
 	
 		// Initialize 'background-col' attribute
@@ -89,7 +92,7 @@ public class Scene implements IInitable {
 	 */
 	public Intersection findIntersection(Ray ray, boolean showInside) {
 		
-		double minDistance = Double.MAX_VALUE;
+		double minDistance = Double.POSITIVE_INFINITY;
 		Surface minObject = null;
 		Point3D minPoint = null;
 		Point3D p;
