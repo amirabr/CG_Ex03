@@ -1,7 +1,6 @@
 package shapes;
 
 import java.util.Map;
-
 import math.Point3D;
 import math.Ray;
 import math.Vec;
@@ -22,6 +21,7 @@ public abstract class Surface implements IInitable {
 	
 	/**
 	 * Common surface attributes, for all shapes.
+	 * 
 	 * @param attributes - the surface attributes
 	 */
 	protected void commonInit(Map<String, String> attributes) {
@@ -78,7 +78,8 @@ public abstract class Surface implements IInitable {
 	
 	/**
 	 * Get the normal to the surface at a specific point.
-	 * @param p - the point
+	 * 
+	 * @param p - the point to measure the normal at
 	 * @return the normal at that point
 	 */
 	public abstract Vec getNormalAtPoint(Point3D p);
@@ -86,13 +87,15 @@ public abstract class Surface implements IInitable {
 	/**
 	 * Check ray-surface intersection.
 	 * If there are 2 intersections, return the closet one.
+	 * 
 	 * @param ray - the ray
 	 * @return the point of intersection, or null otherwise
 	 */
 	public abstract Point3D intersectsWith(Ray ray);
 	
 	/**
-	 * Getter.
+	 * Getter for emission.
+	 * 
 	 * @return mtlEmission
 	 */
 	public Vec getEmissionCoefficient() {
@@ -100,7 +103,8 @@ public abstract class Surface implements IInitable {
 	}
 	
 	/**
-	 * Getter.
+	 * Getter for ambient.
+	 * 
 	 * @return mtlAmbient
 	 */
 	public Vec getAmbientCoefficient() {
@@ -108,7 +112,8 @@ public abstract class Surface implements IInitable {
 	}
 	
 	/**
-	 * Getter.
+	 * Getter for diffuse.
+	 * 
 	 * @return mtlDiffuse
 	 */
 	public Vec getDiffuseCoefficient() {
@@ -116,7 +121,8 @@ public abstract class Surface implements IInitable {
 	}
 	
 	/**
-	 * Getter.
+	 * Getter for specular.
+	 * 
 	 * @return mtlSpecular
 	 */
 	public Vec getSpecularCoefficient() {
@@ -124,11 +130,21 @@ public abstract class Surface implements IInitable {
 	}
 	
 	/**
-	 * Getter.
+	 * Getter for shininess.
+	 * 
 	 * @return mtlShininess
 	 */
 	public double getShininessCoefficient() {
 		return mtlShininess;
+	}
+	
+	/**
+	 * Getter for reflectance.
+	 * 
+	 * @return reflectance
+	 */
+	public double getReflectanceCoefficient() {
+		return reflectance;
 	}
 
 }

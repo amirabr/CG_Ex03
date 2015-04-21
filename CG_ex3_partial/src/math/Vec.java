@@ -108,8 +108,9 @@ public class Vec {
 	 *            Vector
 	 */
 	public void mac(double s, Vec a) {
-		a.scale(s);
-		add(a);
+		Vec mac = a.clone();
+		mac.scale(s);
+		add(mac);
 	}
 
 	/**

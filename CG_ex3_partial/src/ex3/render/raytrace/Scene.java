@@ -144,10 +144,15 @@ public class Scene implements IInitable {
 	 * NOTE: No support for background texture yet, just background color!
 	 *  
 	 * @param ray - the ray
-	 * @param level - currect recursion level
+	 * @param level - current recursion level
 	 * @return the color at that point
 	 */
 	public Vec calcColor(Ray ray, int level) {
+		
+		// Recursion stopping condition
+		if (level == maxRecLvl) {
+			return new Vec(0, 0, 0);
+		}
 		
 		// Find the intersection of the ray with the closest object in the scene
 		Intersection intersection = findIntersection(ray, false);
@@ -158,7 +163,7 @@ public class Scene implements IInitable {
 		}
 		
 		// Initial color is black (0, 0, 0)
-		// I = Iemission + Iambient + Idiffuse + Ispecular
+		// I = Iemission + Iambient + Idiffuse + Ispecular + Ireflective
 		Vec color = new Vec(); 	
 		
 		// Add emission factor
@@ -171,24 +176,38 @@ public class Scene implements IInitable {
 		for (Light light : lights) {
 
 			// Check shadow
+			boolean occluded = false;
 			Vec fromIntersectionToLightSource = light.vectorToMe(intersection.point);
 			Ray shadowRay = new Ray(intersection.point, fromIntersectionToLightSource);
-			Intersection lightIntersection = findIntersection(shadowRay, true);
+			//Intersection lightIntersection = findIntersection(shadowRay, true);
+			Intersection lightIntersection = findIntersection(shadowRay, false); 		// true or false doesn't matter here !!
 			if (lightIntersection != null) {
 				double distanceToLightSource = light.distanceToMe(intersection.point);
-				double distanceToObject = intersection.distance;
+				double distanceToObject = lightIntersection.distance;
 				if (distanceToObject > Intersection.TOLERANCE && distanceToLightSource > distanceToObject + Intersection.TOLERANCE) {
-					continue;
+					occluded = true;
 				}
 			}
 			
-			// Add diffuse factor
-			color.add(calcDiffuseColor(intersection, light));
+			// If point is not shaded
+			if (!occluded) {
 			
-			// Add specular factor
-			color.add(calcSpecularColor(intersection, light));
+				// Add diffuse factor
+				color.add(calcDiffuseColor(intersection, light));
+				
+				// Add specular factor
+				color.add(calcSpecularColor(intersection, light));
+				
+			}
 			
 		}
+
+		// Add reflective factor
+		Vec normal = intersection.object.getNormalAtPoint(intersection.point);
+		Ray reflectionRay = new Ray(intersection.point, ray.v.reflect(normal));
+		double KS = intersection.object.getReflectanceCoefficient();
+		Vec reflectionColor = calcColor(reflectionRay, level+1);
+		color.add(Vec.scale(KS, reflectionColor));
 		
 		// Make sure we don't overflow on color
 		if (color.x > 1) {
