@@ -22,6 +22,10 @@ public abstract class Light implements IInitable {
 	
 	public abstract Point3D getPosition();
 	
+	public abstract Vec vectorToMe(Point3D pos);
+	
+	public abstract double distanceToMe(Point3D pos);
+	
 	/**
 	 * Is the name of the class specified of type Light?
 	 * @param type - a string with a name of a class

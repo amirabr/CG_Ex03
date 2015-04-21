@@ -167,12 +167,28 @@ public class Scene implements IInitable {
 		// Iterate over all the lights in the scene
 		for (Light light : lights) {
 
+			/////
+			/*System.out.println("test");
+			Point3D p1 = new Point3D(1, 2, 3);
+			Point3D p2 = new Point3D(5, 5, 5);
+			Vec v1 = Point3D.vectorBetweenTwoPoints(p1, p2);
+			double d1 = v1.length();
+			double d2 = Point3D.distance(p1, p2);
+			System.out.println(d1);
+			System.out.println(d2);
+			System.out.println("end");*/
+			//////
+			
+			
+			
 			// Check shadow
-			Vec fromIntersectionToLightSource = Point3D.vectorBetweenTwoPoints(intersection.point, light.getPosition());
+			//Vec fromIntersectionToLightSource = Point3D.vectorBetweenTwoPoints(intersection.point, light.getPosition());
+			Vec fromIntersectionToLightSource = light.vectorToMe(intersection.point);
 			Ray shadowRay = new Ray(intersection.point, fromIntersectionToLightSource);
 			Intersection lightIntersection = findIntersection(shadowRay, true);
 			if (lightIntersection != null) {
-				double distanceToLightSource = Point3D.distance(intersection.point, light.getPosition());
+				//double distanceToLightSource = Point3D.distance(intersection.point, light.getPosition());
+				double distanceToLightSource = light.distanceToMe(intersection.point);
 				double distanceToObject = intersection.distance;
 				if (distanceToObject > Intersection.TOLERANCE && distanceToLightSource > distanceToObject + Intersection.TOLERANCE) {
 					continue;
@@ -295,6 +311,7 @@ public class Scene implements IInitable {
 			//L = dLight.getDirection();
 			//L.negate();
 			L = Vec.negate(dLight.getDirection());
+			L.normalize();
 			IL = dLight.getIntensityAtPoint(point);
 		} else if (light instanceof OmniLight) {
 			OmniLight oLight = (OmniLight)light;

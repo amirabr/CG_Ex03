@@ -67,4 +67,12 @@ public class DirLight extends Light {
 		return null;
 	}
 	
+	public Vec vectorToMe(Point3D pos) {
+		return Vec.negate(direction);
+	}
+	
+	public double distanceToMe(Point3D pos) {
+		return Double.POSITIVE_INFINITY;
+	}
+	
 }

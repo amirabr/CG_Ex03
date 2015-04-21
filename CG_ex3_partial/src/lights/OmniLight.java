@@ -116,4 +116,12 @@ public class OmniLight extends Light {
 		return position;
 	}
 	
+	public Vec vectorToMe(Point3D pos) {
+		return Point3D.vectorBetweenTwoPoints(pos, position);
+	}
+	
+	public double distanceToMe(Point3D pos) {
+		return Point3D.distance(pos, position);
+	}
+	
 }
