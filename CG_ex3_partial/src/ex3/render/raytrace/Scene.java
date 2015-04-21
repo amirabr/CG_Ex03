@@ -167,27 +167,11 @@ public class Scene implements IInitable {
 		// Iterate over all the lights in the scene
 		for (Light light : lights) {
 
-			/////
-			/*System.out.println("test");
-			Point3D p1 = new Point3D(1, 2, 3);
-			Point3D p2 = new Point3D(5, 5, 5);
-			Vec v1 = Point3D.vectorBetweenTwoPoints(p1, p2);
-			double d1 = v1.length();
-			double d2 = Point3D.distance(p1, p2);
-			System.out.println(d1);
-			System.out.println(d2);
-			System.out.println("end");*/
-			//////
-			
-			
-			
 			// Check shadow
-			//Vec fromIntersectionToLightSource = Point3D.vectorBetweenTwoPoints(intersection.point, light.getPosition());
 			Vec fromIntersectionToLightSource = light.vectorToMe(intersection.point);
 			Ray shadowRay = new Ray(intersection.point, fromIntersectionToLightSource);
 			Intersection lightIntersection = findIntersection(shadowRay, true);
 			if (lightIntersection != null) {
-				//double distanceToLightSource = Point3D.distance(intersection.point, light.getPosition());
 				double distanceToLightSource = light.distanceToMe(intersection.point);
 				double distanceToObject = intersection.distance;
 				if (distanceToObject > Intersection.TOLERANCE && distanceToLightSource > distanceToObject + Intersection.TOLERANCE) {
@@ -303,27 +287,11 @@ public class Scene implements IInitable {
 		
 		// Find the vector between the intersection point
 		// and the light source, and normalize
-		// Also find IL at that point
-		Vec L = null;
-		Vec IL = null;
-		if (light instanceof DirLight) {
-			DirLight dLight = (DirLight)light; 
-			//L = dLight.getDirection();
-			//L.negate();
-			L = Vec.negate(dLight.getDirection());
-			L.normalize();
-			IL = dLight.getIntensityAtPoint(point);
-		} else if (light instanceof OmniLight) {
-			OmniLight oLight = (OmniLight)light;
-			L = Point3D.vectorBetweenTwoPoints(point, oLight.getPosition());
-			L.normalize();
-			IL = oLight.getIntensityAtPoint(point);
-		} else {
-			SpotLight sLight = (SpotLight)light;
-			L = Point3D.vectorBetweenTwoPoints(point, sLight.getPosition());
-			L.normalize();
-			IL = sLight.getIntensityAtPoint(point);
-		}
+		Vec L = light.vectorToMe(point);
+		L.normalize();
+		
+		// Find IL at that point
+		Vec IL = light.getIntensityAtPoint(point);
 		
 		// Calculate the dot product between them
 		// Note: cosine is negative if angle>90, hence the max()
@@ -352,29 +320,14 @@ public class Scene implements IInitable {
 		
 		// Find the normal at the intersection point
 		Vec N = object.getNormalAtPoint(point);
-		
+
 		// Find the vector between the intersection point
 		// and the light source, and normalize
-		// Also find IL at that point
-		Vec L = null;
-		Vec IL = null;
-		if (light instanceof DirLight) {
-			DirLight dLight = (DirLight)light; 
-			//L = dLight.getDirection();
-			//L.negate();
-			L = Vec.negate(dLight.getDirection());
-			IL = dLight.getIntensityAtPoint(point);
-		} else if (light instanceof OmniLight) {
-			OmniLight oLight = (OmniLight)light;
-			L = Point3D.vectorBetweenTwoPoints(point, oLight.getPosition());
-			L.normalize();
-			IL = oLight.getIntensityAtPoint(point);
-		} else {
-			SpotLight sLight = (SpotLight)light;
-			L = Point3D.vectorBetweenTwoPoints(point, sLight.getPosition());
-			L.normalize();
-			IL = sLight.getIntensityAtPoint(point);
-		}
+		Vec L = light.vectorToMe(point);
+		L.normalize();
+		
+		// Find IL at that point
+		Vec IL = light.getIntensityAtPoint(point);
 		
 		// Reflect L in relation to N, and normalize
 		Vec R = L.reflect(N);
