@@ -196,7 +196,7 @@ public class Scene implements IInitable {
 				color.add(calcDiffuseColor(intersection, light));
 				
 				// Add specular factor
-				color.add(calcSpecularColor(intersection, light));
+				color.add(calcSpecularColor(intersection, light, ray));
 				
 			}
 			
@@ -335,13 +335,13 @@ public class Scene implements IInitable {
 	 * @param intersection point
 	 * @return specular factor
 	 */
-	private Vec calcSpecularColor(Intersection intersection, Light light) {
+	private Vec calcSpecularColor(Intersection intersection, Light light, Ray ray) { // ray parameter
 		
 		Surface object = intersection.object;
 		Point3D point  = intersection.point;
 		
 		// Find the normal at the intersection point
-		Vec N = object.getNormalAtPoint(point);
+		Vec N = object.getNormalAtPoint(point); // negate
 
 		// Find the vector between the intersection point
 		// and the light source, and normalize
@@ -353,11 +353,12 @@ public class Scene implements IInitable {
 		
 		// Reflect L in relation to N, and normalize
 		Vec R = L.reflect(N);
-		R.normalize();
+		R.normalize(); // negate
 		
 		// Find the vector from the eye to the intersection point, and normalize
-		Vec V = Point3D.vectorBetweenTwoPoints(camera.getEye(), point);
-		V.normalize();
+		//Vec V = Point3D.vectorBetweenTwoPoints(camera.getEye(), point); // v = ray.v
+		Vec V = ray.v; 
+		//V.normalize();
 		
 		// Calculate the dot product between them
 		// Note: cosine is negative if angle>90, hence the max()
