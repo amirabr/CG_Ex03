@@ -32,6 +32,7 @@ public class Scene implements IInitable {
 	private String bgTexturePath; 		// Background image of the scene
 	private int maxRecLvl; 				// Max number of recursive rays when calculating reflections
 	private Vec ambientLight; 			// Ambient light of the scene
+	private int superSampling; 			// Super sampling
 	
 	private File scenePath; 			// Path to scene files
 	private int canvasWidth; 			// Canvas width (used for texture calculations)
@@ -100,6 +101,14 @@ public class Scene implements IInitable {
 			ambientLight = new Vec(attributes.get("ambient-light"));
 		} else {
 			ambientLight = new Vec(0, 0, 0);
+		}
+		
+		// Initialize 'super-samp-width' attribute
+		// Default is (0, 0, 0)
+		if (attributes.containsKey("super-samp-width")) {
+			superSampling = Integer.parseInt(attributes.get("super-samp-width"));
+		} else {
+			superSampling = -1;
 		}
 		
 		// Initialize the background texture
@@ -445,6 +454,15 @@ public class Scene implements IInitable {
 	
 	public Ray castRay(double x, double y, double width, double height) {
 		return camera.constructRayThroughPixel(x, y, width, height);
+	}
+	
+	/**
+	 * Getter for superSampling.
+	 * 
+	 * @return superSampling
+	 */
+	public int superSampling() {
+		return superSampling;
 	}
 	
 }
