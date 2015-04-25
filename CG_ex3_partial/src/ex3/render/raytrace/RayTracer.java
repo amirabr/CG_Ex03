@@ -72,14 +72,15 @@ public class RayTracer implements IRenderer {
 		
 		for (int i=0; i<canvasWidth; i++) {
 //			System.out.println("i: " + i + " line: " + line);
-			/*if (i==480/2-110 && line==360/2+30) {
+			//if (i==480/2-30 && line==360/2) {
+			if (i==0 && line==0) {
 //			if (i==480/4 && line==360/4-20) {
 //			if (i==285 && line==221) {
-				System.out.println("stop here");
+//				System.out.println("stop here");
 				//canvas.setRGB(i, line, new Color(255, 255, 255).getRGB());
-				//canvas.setRGB(i, line, Color.CYAN.getRGB());
-				//continue;
-			}*/
+//				canvas.setRGB(i, line, Color.CYAN.getRGB());
+//				scontinue;
+			}
 			
 			Ray ray = scene.castRay(i, line, canvasWidth, canvasHeight);
 			Vec color = scene.calcColor(ray, 0, i, line);

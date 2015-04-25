@@ -83,7 +83,7 @@ public class Camera implements IInitable{
 		// Make sure we have an orthogonal basis
 		right = Vec.crossProd(towards, up);
 		if (Vec.dotProd(towards, up) != 0) {
-			up = Vec.crossProd(towards, right);
+			up = Vec.crossProd(right, towards);
 		}
 		
 		// Make sure we have an orthonormal basis
