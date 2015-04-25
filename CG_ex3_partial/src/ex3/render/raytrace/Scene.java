@@ -1,8 +1,13 @@
 package ex3.render.raytrace;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import javax.imageio.ImageIO;
 
 import shapes.Disc;
 import shapes.Intersection;
@@ -24,9 +29,16 @@ import math.Vec;
 public class Scene implements IInitable {
 
 	private Vec bgColor; 				// Background color of the scene
-	private String bgTexture; 			// Background image of the scene
+	private String bgTexturePath; 		// Background image of the scene
 	private int maxRecLvl; 				// Max number of recursive rays when calculating reflections
 	private Vec ambientLight; 			// Ambient light of the scene
+	
+	private File scenePath; 			// Path to scene files
+	private int canvasWidth; 			// Canvas width (used for texture calculations)
+	private int canvasHeight; 			// Canvas height (used for texture calculations)
+	private double wRatio; 				// Canvas-texture width ratio
+	private double hRatio; 				// Canvas-texture height ratio
+	private BufferedImage bgTexture; 	// Actual background texture image
 	
 	protected List<Surface> surfaces; 	// All of the surfaces in the scene
 	protected List<Light> lights; 	 	// All of the lights in the scene
@@ -34,9 +46,17 @@ public class Scene implements IInitable {
 
 	/**
 	 * Constructor.
+	 * 
+	 * @param canvasWidth - the canvas width
+	 * @param canvasHeight - the canvas height
+	 * @param path - the scene path
 	 */
-	public Scene() {
+	public Scene(int canvasWidth, int canvasHeight, File path) {
 
+		this.canvasWidth = canvasWidth;
+		this.canvasHeight = canvasHeight;
+		this.scenePath = path;
+		
 		surfaces = new LinkedList<Surface>(); 	// No surfaces
 		lights = new LinkedList<Light>(); 		// No lights
 		camera = new Camera(); 					// Empty camera
@@ -45,6 +65,7 @@ public class Scene implements IInitable {
 
 	/**
 	 * Initialize attributes from XML.
+	 * 
 	 * @param attributes - user attributes for Scene
 	 */
 	public void init(Map<String, String> attributes) {
@@ -60,9 +81,9 @@ public class Scene implements IInitable {
 		// Initialize 'background-tex' attribute
 		// Default is null
 		if (attributes.containsKey("background-tex")) {
-			bgTexture = attributes.get("background-tex");
+			bgTexturePath = attributes.get("background-tex");
 		} else {
-			bgTexture = null;
+			bgTexturePath = null;
 		}
 		
 		// Initialize 'max-recursion-level' attribute
@@ -81,16 +102,38 @@ public class Scene implements IInitable {
 			ambientLight = new Vec(0, 0, 0);
 		}
 		
+		// Initialize the background texture
+		initBgTexture();
+		
+	}
+	
+	/**
+	 * Initialize the background texture.
+	 * Read image to memory and calculate ratios.
+	 */
+	private void initBgTexture() {
+		
+		if (bgTexturePath != null) {    
+			try {
+				bgTexture = ImageIO.read(new File(scenePath.getParent() + File.separator + bgTexturePath));
+				wRatio = 1.0 * bgTexture.getWidth() / canvasWidth;
+				hRatio = 1.0 * bgTexture.getHeight() / canvasHeight;
+			} catch (IOException e1) {
+				System.out.println("Error: Could not read texture file.");
+			}
+		}
+		
 	}
 
 	/**
 	 * Shoot the ray into the scene, see if it hits anything.
 	 * If it hits multiple objects, return the closest one.
 	 * If it hits nothing, return null.
+	 * 
 	 * @param ray - the ray
 	 * @return intersecting point and object
 	 */
-	public Intersection findIntersection(Ray ray, boolean showInside) {
+	public Intersection findIntersection(Ray ray) {
 		
 		double minDistance = Double.POSITIVE_INFINITY;
 		Surface minObject = null;
@@ -104,7 +147,7 @@ public class Scene implements IInitable {
 			if (obj instanceof Disc) {
 				p = Intersection.rayDiscIntersection(ray, (Disc)obj);
 			} else if (obj instanceof Sphere) {
-				p = Intersection.raySphereIntersection(ray, (Sphere)obj, showInside);
+				p = Intersection.raySphereIntersection(ray, (Sphere)obj);
 			} else {
 				p = Intersection.rayPolyIntersection(ray, (Poly)obj);
 			}
@@ -134,20 +177,21 @@ public class Scene implements IInitable {
 		
 		// Else, return the intersection
 		return new Intersection(minObject, minPoint, minDistance);
+		
 	}
 
 	/**
 	 * Calculate the color where the ray points at.
 	 * If it hits an object, calculate the color there.
 	 * If it hits nothing, calculate the background color/texture.
-	 * 
-	 * NOTE: No support for background texture yet, just background color!
 	 *  
 	 * @param ray - the ray
 	 * @param level - current recursion level
+	 * @param x - the x coordinate of the currently drawn pixel
+	 * @param y - the y coordinate of the currently drawn pixel
 	 * @return the color at that point
 	 */
-	public Vec calcColor(Ray ray, int level) {
+	public Vec calcColor(Ray ray, int level, int x, int y) {
 		
 		// Recursion stopping condition
 		if (level == maxRecLvl) {
@@ -155,11 +199,27 @@ public class Scene implements IInitable {
 		}
 		
 		// Find the intersection of the ray with the closest object in the scene
-		Intersection intersection = findIntersection(ray, false);
+		Intersection intersection = findIntersection(ray);
 		
-		// No intersection, return bgTexture or bgColor
+		// No intersection, return bgColor or bgTexture
 		if (intersection == null) {
-			return bgColor;	
+			
+			if (bgTexture == null) {
+				
+				// If no background texture is defined, return the background color
+				return bgColor;
+				
+			} else {
+				
+				// If background texture is defined, return the proper pixel from it
+				int rgb = bgTexture.getRGB((int)(x * wRatio), (int)(y * hRatio));
+				int red =   (rgb >> 16) & 0xFF;
+				int green = (rgb >>  8) & 0xFF;
+				int blue =  (rgb      ) & 0xFF;
+				return new Vec(red/255.0, green/255.0, blue/255.0);
+				
+			}
+			
 		}
 		
 		// Initial color is black (0, 0, 0)
@@ -177,15 +237,16 @@ public class Scene implements IInitable {
 
 			// Check shadow
 			boolean occluded = false;
-			Vec fromIntersectionToLightSource = light.vectorToMe(intersection.point);
-			Ray shadowRay = new Ray(intersection.point, fromIntersectionToLightSource);
-			//Intersection lightIntersection = findIntersection(shadowRay, true);
-			Intersection lightIntersection = findIntersection(shadowRay, false); 		// true or false doesn't matter here !!
-			if (lightIntersection != null) {
-				double distanceToLightSource = light.distanceToMe(intersection.point);
-				double distanceToObject = lightIntersection.distance;
-				if (distanceToObject > Intersection.TOLERANCE && distanceToLightSource > distanceToObject + Intersection.TOLERANCE) {
-					occluded = true;
+			if (!(light instanceof DirLight)) { 	// Directional light doesn't cast a shadow
+				Vec fromIntersectionToLightSource = light.vectorToMe(intersection.point);
+				Ray shadowRay = new Ray(intersection.point, fromIntersectionToLightSource);
+				Intersection lightIntersection = findIntersection(shadowRay);
+				if (lightIntersection != null) {
+					double distanceToLightSource = light.distanceToMe(intersection.point);
+					double distanceToObject = lightIntersection.distance;
+					if (distanceToObject > Intersection.TOLERANCE && distanceToLightSource > distanceToObject + Intersection.TOLERANCE) {
+						occluded = true;
+					}
 				}
 			}
 			
@@ -206,7 +267,7 @@ public class Scene implements IInitable {
 		Vec normal = intersection.object.getNormalAtPoint(intersection.point);
 		Ray reflectionRay = new Ray(intersection.point, ray.v.reflect(normal));
 		double KS = intersection.object.getReflectanceCoefficient();
-		Vec reflectionColor = calcColor(reflectionRay, level+1);
+		Vec reflectionColor = calcColor(reflectionRay, level+1, x, y);
 		color.add(Vec.scale(KS, reflectionColor));
 		
 		// Make sure we don't overflow on color
@@ -221,11 +282,13 @@ public class Scene implements IInitable {
 		}
 		
 		return color;
+		
 	}
 
 	/**
 	 * Add objects to the scene by name.
 	 * Object can be of type Light or type Surface.
+	 * 
 	 * @param name - Object's name
 	 * @param attributes - Object's attributes
 	 */
@@ -269,6 +332,7 @@ public class Scene implements IInitable {
 
 	/**
 	 * Initialize the camera.
+	 * 
 	 * @param attributes - user attributes for Camera
 	 */
 	public void setCameraAttributes(Map<String, String> attributes) {
@@ -277,6 +341,7 @@ public class Scene implements IInitable {
 	
 	/**
 	 * Calculate the amount of emission color at the intersection point.
+	 * 
 	 * @param intersection point
 	 * @return emission factor
 	 */
@@ -286,6 +351,7 @@ public class Scene implements IInitable {
 	
 	/**
 	 * Calculate the amount of ambient color at the intersection point.
+	 * 
 	 * @param intersection point
 	 * @return ambient factor
 	 */
@@ -296,6 +362,7 @@ public class Scene implements IInitable {
 	/**
 	 * Calculate the amount of diffuse color at the intersection point,
 	 * by the specified light source.
+	 * 
 	 * @param intersection point
 	 * @return diffuse factor
 	 */
@@ -332,16 +399,17 @@ public class Scene implements IInitable {
 	/**
 	 * Calculate the amount of specular color at the intersection point,
 	 * by the specified light source.
+	 * 
 	 * @param intersection point
 	 * @return specular factor
 	 */
-	private Vec calcSpecularColor(Intersection intersection, Light light, Ray ray) { // ray parameter
+	private Vec calcSpecularColor(Intersection intersection, Light light, Ray ray) {
 		
 		Surface object = intersection.object;
 		Point3D point  = intersection.point;
 		
 		// Find the normal at the intersection point
-		Vec N = object.getNormalAtPoint(point); // negate
+		Vec N = object.getNormalAtPoint(point);
 
 		// Find the vector between the intersection point
 		// and the light source, and normalize
@@ -353,12 +421,10 @@ public class Scene implements IInitable {
 		
 		// Reflect L in relation to N, and normalize
 		Vec R = L.reflect(N);
-		R.normalize(); // negate
+		R.normalize();
 		
-		// Find the vector from the eye to the intersection point, and normalize
-		//Vec V = Point3D.vectorBetweenTwoPoints(camera.getEye(), point); // v = ray.v
+		// Find the vector from the starting point to the intersection point, and normalize
 		Vec V = ray.v; 
-		//V.normalize();
 		
 		// Calculate the dot product between them
 		// Note: cosine is negative if angle>90, hence the max()
@@ -380,4 +446,5 @@ public class Scene implements IInitable {
 	public Ray castRay(double x, double y, double width, double height) {
 		return camera.constructRayThroughPixel(x, y, width, height);
 	}
+	
 }

@@ -12,8 +12,7 @@ public class Ex3 {
 	private static String getAboutMessage() {
 		// TODO: Add any specific instructions here if you changed any thing or
 		// had any improvements document them all
-		return "GUI for exercise3\nPlease include any specific information you may "
-				+ "want the grader to see while testing this.";
+		return "Have a great day! :-)";
 	}
 
 	/**

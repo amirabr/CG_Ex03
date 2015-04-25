@@ -3,7 +3,6 @@ package shapes;
 import java.util.Map;
 
 import math.Point3D;
-import math.Ray;
 import math.Vec;
 
 /**
@@ -24,6 +23,7 @@ public class Disc extends Sphere {
 	
 	/**
 	 * Constructor.
+	 * 
 	 * @param attributes - user attributes for Disc
 	 */
 	public Disc(Map<String, String> attributes) {
@@ -38,6 +38,7 @@ public class Disc extends Sphere {
 	
 	/**
 	 * Get the 'normal' attribute from the XML
+	 * 
 	 * @param attributes - user attributes for Disc
 	 */
 	private void dontForget(Map<String, String> attributes) {
@@ -55,22 +56,13 @@ public class Disc extends Sphere {
 	 * Get the normal to the surface at a specific point.
 	 * The normal of each point on the disc's surface is
 	 * the same normal we got in init()!
+	 * 
 	 * @param p - the point
 	 * @return the normal at that point
 	 */
 	@Override
 	public Vec getNormalAtPoint(Point3D p) {
 		return normal;
-	}
-	
-	/**
-	 * Check ray-disc intersection.
-	 * @param ray - the ray
-	 * @return the point of intersection, or null otherwise
-	 */
-	@Override
-	public Point3D intersectsWith(Ray ray) {
-		return null;
 	}
 
 }

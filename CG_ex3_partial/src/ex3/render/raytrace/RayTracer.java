@@ -15,8 +15,10 @@ public class RayTracer implements IRenderer {
 	private Scene scene;
 	private int canvasWidth;
 	private int canvasHeight;
-	private File filePath;
 	
+	/**
+	 * Constructor.
+	 */
 	public RayTracer() {
 		
 	}
@@ -38,18 +40,21 @@ public class RayTracer implements IRenderer {
 	@Override
 	public void init(SceneDescriptor sceneDesc, int width, int height, File path) {
 		
-		scene = new Scene();
+		// Initialize the scene
+		scene = new Scene(width, height, path);
 		scene.init(sceneDesc.getSceneAttributes());
 		
+		// Add all the objects to the scene
 		for (Element e : sceneDesc.getObjects()) {
 			scene.addObjectByName(e.getName(), e.getAttributes());
 		}
 		
+		// Set the camera
 		scene.setCameraAttributes(sceneDesc.getCameraAttributes());
 		
+		// Get the canvas height and width
 		this.canvasWidth = width;
 		this.canvasHeight = height;
-		this.filePath = path;
 		
 	}
 
@@ -67,24 +72,20 @@ public class RayTracer implements IRenderer {
 		
 		for (int i=0; i<canvasWidth; i++) {
 //			System.out.println("i: " + i + " line: " + line);
-			if (i==480/2-110 && line==360/2+30) {
+			/*if (i==480/2-110 && line==360/2+30) {
 //			if (i==480/4 && line==360/4-20) {
 //			if (i==285 && line==221) {
 				System.out.println("stop here");
 				//canvas.setRGB(i, line, new Color(255, 255, 255).getRGB());
 				//canvas.setRGB(i, line, Color.CYAN.getRGB());
 				//continue;
-			}
+			}*/
 			
 			Ray ray = scene.castRay(i, line, canvasWidth, canvasHeight);
-			Vec color = scene.calcColor(ray, 0);
-			try {
+			Vec color = scene.calcColor(ray, 0, i, line);
 			Color realColor = new Color((int)(color.x*255), (int)(color.y*255), (int)(color.z*255));
-			canvas.setRGB(i, line, realColor.getRGB());
-			} catch (IllegalArgumentException ex) {
-				System.out.println("color overflow");
-			}
-			
+			canvas.setRGB(i, line, realColor.getRGB());	
+	
 		}
 		
 	}

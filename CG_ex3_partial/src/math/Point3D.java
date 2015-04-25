@@ -21,6 +21,7 @@ public class Point3D {
 	
 	/**
 	 * Constructor, initializes point to given coordinates.
+	 * 
 	 * @param x - x coordinate
 	 * @param y - y coordinate
 	 * @param z - z coordinate
@@ -33,6 +34,7 @@ public class Point3D {
 
 	/**
 	 * Constructor, initializes point to given coordinates, in string representation.
+	 * 
 	 * @param v - string representation of coordinates
 	 */
 	public Point3D(String p) {
@@ -45,6 +47,7 @@ public class Point3D {
 	
 	/**
 	 * Copy constructor, initializes point to given coordinates, from another point.
+	 * 
 	 * @param p - other point
 	 */
 	public Point3D(Point3D p) {
@@ -55,6 +58,7 @@ public class Point3D {
 	
 	/**
 	 * Distance between this point and another point p.
+	 * 
 	 * @param p - the other point
 	 * @return the distance between the points
 	 */
@@ -67,6 +71,7 @@ public class Point3D {
 	
 	/**
 	 * Construct a vector to another point.
+	 * 
 	 * @param p - the other point
 	 * @return a vector from this point to the other point
 	 */
@@ -76,6 +81,7 @@ public class Point3D {
 	
 	/**
 	 * Adds vector to point. Result is point.
+	 * 
 	 * @param v - the vector to add
 	 * @return the point at the end of the vector
 	 */
@@ -87,6 +93,7 @@ public class Point3D {
 	
 	/**
 	 * Adds a vector to a point. Result is a point.
+	 * 
 	 * @param p - the point
 	 * @param v - the vector
 	 * @return the point at the end of the vector
@@ -99,6 +106,7 @@ public class Point3D {
 	
 	/**
 	 * Distance between two points.
+	 * 
 	 * @param p1 - the first point
 	 * @param p2 - the second point
 	 * @return the distance between the two points
@@ -109,6 +117,7 @@ public class Point3D {
 	
 	/**
 	 * Returns the vector between two points.
+	 * 
 	 * @param p1 - the first point
 	 * @param p2 - the second point
 	 * @return the vector between the two points
@@ -119,6 +128,7 @@ public class Point3D {
 	
 	/**
 	 * Compares two points.
+	 * 
 	 * @param p1 - the first point
 	 * @param p2 - the second point
 	 * @return true if the points have identical values, false otherwise
@@ -129,6 +139,7 @@ public class Point3D {
 	
 	/**
 	 * Compares tuple to another tuple.
+	 * 
 	 * @param t - other tuple
 	 * @return true if they have the same coordinates, false otherwise 
 	 */

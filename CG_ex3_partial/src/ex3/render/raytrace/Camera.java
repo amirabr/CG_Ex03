@@ -22,8 +22,6 @@ public class Camera implements IInitable{
 	// View plane properties
 	private double screenDist;
 	private double screenWidth;
-	private double screenHeight;
-	//private double frustum;
 	
 	/**
 	 * Constructor.
@@ -36,6 +34,7 @@ public class Camera implements IInitable{
 	
 	/**
 	 * Initialize attributes from XML.
+	 * 
 	 * @param attributes - user attributes for camera
 	 */
 	public void init(Map<String, String> attributes) throws IllegalArgumentException {
@@ -118,7 +117,6 @@ public class Camera implements IInitable{
 		
 		// Find the center pixel of the view plane
 		pixelRatio = screenWidth / width;
-		screenHeight = height * pixelRatio;
 		centerPixel2D = new Point3D(Math.floor(width/2), Math.floor(height/2), 0);
 		centerPixel3D = Point3D.addVectorToPoint(eye, Vec.scale(screenDist, towards));
 		
@@ -134,6 +132,11 @@ public class Camera implements IInitable{
 		
 	}
 	
+	/**
+	 * Getter for eye.
+	 * 
+	 * @return eye
+	 */
 	public Point3D getEye() {
 		return eye;
 	}

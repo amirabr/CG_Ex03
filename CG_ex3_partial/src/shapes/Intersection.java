@@ -26,6 +26,7 @@ public class Intersection {
 	
 	/**
 	 * Constructor.
+	 * 
 	 * @param object
 	 * @param point
 	 * @param distance
@@ -39,48 +40,12 @@ public class Intersection {
 	/**
 	 * Ray-sphere intersection algorithm.
 	 * Returns the point of intersection if the ray intersects with the sphere, null otherwise.
+	 * 
 	 * @param ray - the ray
 	 * @param sphere - the sphere
-	 * @param showInside - If true, looking for an intersection with the INSIDE of the sphere.
-	 * 					   If false, looking for an intersection with the OUTSIDE of the sphere.
 	 * @return the intersection point if exists, null otherwise
 	 */
-	public static Point3D raySphereIntersection(Ray ray, Sphere sphere, boolean showInside) {
-		/*
-		Vec fromOtoP0 = Point3D.vectorBetweenTwoPoints(sphere.getCenter(), ray.p);
-		double a = 1;
-	    double b = 2 * Vec.dotProd(ray.v, fromOtoP0);
-	    double c = fromOtoP0.lengthSquared() - Math.pow(sphere.getRadius(), 2);
-	    double discriminant = (b * b - 4 * a * c);
-	    double d = Math.sqrt(discriminant);
-	    
-	    // No solution exists
-	    if (discriminant < 0.0) {
-	        return null;
-	     }
-		
-	    // a solution exists, find it
-	    double t1 = +(-b + d) / (2.0 * a);
-        double t2 = +(-b - d) / (2.0 * a);
-        
-        // If t < 0 the intersection is behind me, ignore it
-        if (t1 <= 0 && t2 <= 0) {
-        	return null;
-        }
-        
-        // Find the closest t of the two
-        double minT = Math.min(t1, t2);
-        
-        // Return the point of intersection
-        return Point3D.addVectorToPoint(ray.p, Vec.scale(minT, ray.v));
-*/
-		
-		///////////
-		///////////
-		// IGNORING THE showInside ARGUMENT FOR NOW
-		//////////
-		/////////
-		
+	public static Point3D raySphereIntersection(Ray ray, Sphere sphere) {
 		
 		Vec fromOtoP0 = Point3D.vectorBetweenTwoPoints(sphere.getCenter(), ray.p);
 		double a = 1;
@@ -116,49 +81,16 @@ public class Intersection {
         // If both t's are in front of me, the intersection is in front of me, take the closer one
         return Point3D.addVectorToPoint(ray.p, Vec.scale(Math.min(t1, t2), ray.v));
         
-        /*
-        // Here t1 < 0 and t2 > 0
-        // This means i'm inside the sphere, with t1 behind me and t2 in front of me,
-        // so i'm facing the inside of the sphere
-        if (t1 < 0) {
-        	
-        	// If I want to see the inside, return t2
-        	if (showInside) {
-        		return Point3D.addVectorToPoint(ray.p, Vec.scale(t2, ray.v));
-        	}
-        	
-        	// If not, ignore it
-        	return null;
-        	
-        }
-        
-        // Here t1 > 0 and t2 < 0
-        // This means i'm inside the sphere again, this time pointing the other way
-        // Same deal as before
-        if (t2 < 0) {
-        	
-        	// If I want to see the inside, return t1
-        	if (showInside) {
-        		return Point3D.addVectorToPoint(ray.p, Vec.scale(t1, ray.v));
-        	}
-        	
-        	// If not, ignore it
-        	return null;
-        	
-        }
-        
-        // Here t1 > 0 and t2 > 0
-        // This means i'm outside the sphere, facing it, with 2 intersecting points
-        // If I want to see the inside, return the further t (the bigger one)
-        // If I want to see the outside, return the closer t (the smaller one)
-        if (showInside) {
-        	return Point3D.addVectorToPoint(ray.p, Vec.scale(Math.max(t1, t2), ray.v));
-        } else {
-        	return Point3D.addVectorToPoint(ray.p, Vec.scale(Math.min(t1, t2), ray.v));
-        }
-        */
 	}
 	
+	/**
+	 * Ray-disc intersection algorithm.
+	 * Returns the point of intersection if the ray intersects with the disc, null otherwise.
+	 * 
+	 * @param ray - the ray
+	 * @param disc - the disc
+	 * @return the intersection point if exists, null otherwise
+	 */
 	public static Point3D rayDiscIntersection(Ray ray, Disc disc) {
 		
 		// Check if the ray intersects with the disc's plane
@@ -182,6 +114,14 @@ public class Intersection {
 		
 	}
 	
+	/**
+	 * Ray-poly intersection algorithm.
+	 * Returns the point of intersection if the ray intersects with the poly, null otherwise.
+	 * 
+	 * @param ray - the ray
+	 * @param poly - the poly
+	 * @return the intersection point if exists, null otherwise
+	 */
 	public static Point3D rayPolyIntersection(Ray ray, Poly poly) {
 		
 		// Check if the ray intersects with the disc's plane
@@ -213,8 +153,18 @@ public class Intersection {
 		
 		// All the conditions held, the intersection point is correct!
 		return intersection;
+		
 	}
 	
+	/**
+	 * Ray-surface intersection algorithm.
+	 * Returns the point of intersection if the ray intersects with the surface, null otherwise.
+	 * 
+	 * @param ray - the ray
+	 * @param surfaceNormal - a normal to the surface
+	 * @param pointOnSurface - a point of the surface
+	 * @return the intersection point if exists, null otherwise
+	 */
 	private static Point3D raySurfaceIntersection(Ray ray, Vec surfaceNormal, Point3D pointOnSurface) {
 		
 		// First, check if the surface is facing the ray
@@ -231,11 +181,6 @@ public class Intersection {
 		// Find the intersection of the ray with the surface plane
 		Vec fromRaytoSurface = Point3D.vectorBetweenTwoPoints(ray.p, pointOnSurface);
 		double fromRaytoSurfaceDotSurfaceNormal = Vec.dotProd(fromRaytoSurface, surfaceNormal);
-		
-		/*if (fromRaytoSurfaceDotSurfaceNormal >= 0) {
-			return null;
-		}*/
-		
 		double d = fromRaytoSurfaceDotSurfaceNormal / rayDotNormal;
 		return Point3D.addVectorToPoint(ray.p, Vec.scale(d, ray.v));
 		

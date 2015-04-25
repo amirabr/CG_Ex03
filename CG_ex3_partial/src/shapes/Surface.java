@@ -2,7 +2,6 @@ package shapes;
 
 import java.util.Map;
 import math.Point3D;
-import math.Ray;
 import math.Vec;
 import ex3.render.raytrace.IInitable;
 
@@ -16,7 +15,7 @@ public abstract class Surface implements IInitable {
 	protected Vec mtlSpecular; 		// Specular part of the material
 	protected Vec mtlAmbient; 		// Ambient part of the material
 	protected Vec mtlEmission; 		// Emission part of the material
-	protected double mtlShininess; 	// Power of the (𝑉*𝑅) in the formula (𝑛)
+	protected double mtlShininess; 	// Power of the (V*R) in the formula (n)
 	protected double reflectance; 	// Reflectance coefficient of the material
 	
 	/**
@@ -83,15 +82,6 @@ public abstract class Surface implements IInitable {
 	 * @return the normal at that point
 	 */
 	public abstract Vec getNormalAtPoint(Point3D p);
-	
-	/**
-	 * Check ray-surface intersection.
-	 * If there are 2 intersections, return the closet one.
-	 * 
-	 * @param ray - the ray
-	 * @return the point of intersection, or null otherwise
-	 */
-	public abstract Point3D intersectsWith(Ray ray);
 	
 	/**
 	 * Getter for emission.

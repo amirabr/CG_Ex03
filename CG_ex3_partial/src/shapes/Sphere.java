@@ -3,7 +3,6 @@ package shapes;
 import java.util.Map;
 
 import math.Point3D;
-import math.Ray;
 import math.Vec;
 
 /**
@@ -24,6 +23,7 @@ public class Sphere extends Surface {
 	
 	/**
 	 * Constructor.
+	 * 
 	 * @param attributes - user attributes for Sphere
 	 */
 	public Sphere(Map<String, String> attributes) {
@@ -38,6 +38,7 @@ public class Sphere extends Surface {
 	
 	/**
 	 * Initialize attributes from XML.
+	 * 
 	 * @param attributes - user attributes for Sphere
 	 */
 	@Override
@@ -61,6 +62,7 @@ public class Sphere extends Surface {
 	 * Get the normal to the surface at a specific point.
 	 * The normal of each point on the sphere's surface is
 	 * the normalized subtraction of the point and the center.
+	 * 
 	 * @param p - the point
 	 * @return the normal at that point
 	 */
@@ -72,18 +74,8 @@ public class Sphere extends Surface {
 	}
 	
 	/**
-	 * Check ray-sphere intersection.
-	 * If there are 2 intersections, return the closet one.
-	 * @param ray - the ray
-	 * @return the point of intersection, or null otherwise
-	 */
-	@Override
-	public Point3D intersectsWith(Ray ray) {
-		return null;
-	}
-	
-	/**
-	 * Getter for center;
+	 * Getter for center.
+	 * 
 	 * @return center
 	 */
 	public Point3D getCenter() {
@@ -91,7 +83,8 @@ public class Sphere extends Surface {
 	}
 	
 	/**
-	 * Getter for radius
+	 * Getter for radius.
+	 * 
 	 * @return radius
 	 */
 	public double getRadius() {

@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import math.Point3D;
-import math.Ray;
 import math.Vec;
 
 /**
@@ -15,8 +14,6 @@ import math.Vec;
  * ==============
  * We assume the points are given in a counter-clockwise direction.
  * We assume that there are at least 3 points and 3 edges that are linearly independent.
- * 
- * TODO: make sure it's the case :)
  *
  */
 public class Poly extends Surface {
@@ -33,6 +30,7 @@ public class Poly extends Surface {
 	
 	/**
 	 * Constructor.
+	 * 
 	 * @param attributes - user attributes for Surface
 	 */
 	public Poly(Map<String, String> attributes) {
@@ -50,6 +48,7 @@ public class Poly extends Surface {
 	
 	/**
 	 * Initialize attributes from XML.
+	 * 
 	 * @param attributes - user attributes for Poly
 	 */
 	@Override
@@ -87,6 +86,7 @@ public class Poly extends Surface {
 	 * Get the normal to the surface at a specific point.
 	 * The normal of each point on the poly's surface is
 	 * calculated using the right-hand rule.
+	 * 
 	 * @param p - the point
 	 * @return the normal at that point
 	 */
@@ -110,17 +110,8 @@ public class Poly extends Surface {
 	}
 	
 	/**
-	 * Check ray-poly intersection.
-	 * @param ray - the ray
-	 * @return the point of intersection, or null otherwise
-	 */
-	@Override
-	public Point3D intersectsWith(Ray ray) {
-		return null;
-	}
-	
-	/**
 	 * Getter for a specified point.
+	 * 
 	 * @param i - the point number
 	 * @return the point
 	 */
@@ -133,6 +124,7 @@ public class Poly extends Surface {
 	
 	/**
 	 * Getter for size.
+	 * 
 	 * @return how many points the poly has
 	 */
 	public int getSize() {
